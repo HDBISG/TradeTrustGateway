@@ -34,8 +34,8 @@ export const getWallet = async ({
       ? new providers.JsonRpcProvider()
       : getDefaultProvider(network === "mainnet" ? "homestead" : network); // homestead => aka mainnet
   if (encryptedWalletPath) {
-    const { password } = await inquirer.prompt({ type: "password", name: "password", message: "Wallet password" });
-    //  const { password } = "abc";
+    //const { password } = await inquirer.prompt({ type: "password", name: "password", message: "Wallet password" });
+    var   password  = "abc";
     //const file = await readFile(encryptedWalletPath);
       const file = fs.readFileSync(encryptedWalletPath, "utf8");
     const wallet = await ethers.Wallet.fromEncryptedJson(file, password, progress);
