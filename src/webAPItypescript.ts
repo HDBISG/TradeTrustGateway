@@ -10,42 +10,52 @@ var wrapper = require('./implementations/wrapper');
 var app = express();
 app.use(bodyParser.json());
 
-app.post('/createWallet', function (req, res) {
+app.post('/createWallet', function (req:any, res:any) {
 
 })
 
-app.post('/topUp', function (req, res) {
+app.post('/topUp', function (req:any, res:any) {
 
 })
 
-app.post('/deployDocStore', function (req, res) {
+app.post('/deployDocStore', function (req:any, res:any) {
 
 })
 
 
-app.post('/wrap', function (req, res) {
+app.post('/wrap', async function (req:any, res:any) {
     let data = req.body;
 
-    var wrapDocumentn = new wrapper.wrapDocument();
-    console.log("begin-------------------------------------!");
+    var wrapDocument = new wrapper.WrapDocument();
     var rawPath = path.normalize( "/workspace_vs/TradeTrustGateway/resource/raw1.json" ); 
     var wrapPath = path.normalize( "/workspace_vs/TradeTrustGateway/resource/wrapp1.json" ); 
-    wrapDocumentn.wrapFile( rawPath, wrapPath);
+    var wrappedDocumentPromise = wrapDocument.wrapFile( rawPath, wrapPath );
 
-    res.end( wrappedDocument );
+    var wrappedDocumen = wrappedDocumentPromise.then( function(result:string) {
+        return result;
+    })
+
+    res.end( wrappedDocumen );
 })
 
-app.post('/wrap2', function (req, res) {
+app.post('/wrap2', async function(req:any, res:any) {
     let data = req.body;
 
-    var wrapDocumentn = new wrapper.wrapDocument( );
+    var wrapDocumentn = new wrapper.WrapDocument( );
     console.log("begin-------------------------------------!");
-    wrapDocumentn.wrap( data );
+    var wrappedDocumen = await wrapDocumentn.wrap( data );
+    /*
+    var wrappedDocumentPromise = wrapDocumentn.wrap( data );
+    console.log("wrappedDocumentPromise" + wrappedDocumentPromise );
 
-    res.end( wrappedDocument );
+    var wrappedDocumen = wrappedDocumentPromise.then( function(result:string) {
+        return result;
+    })
+    */
+    res.end( JSON.stringify( wrappedDocumen ) );
 })
 
-app.post('/publish', function (req, res) {
+app.post('/publish', function (req:any, res:any) {
     let data = req.body;
     let document = data;
     const wrappedDocument = wrapDocument(document);
@@ -56,7 +66,7 @@ app.post('/publish', function (req, res) {
     // https://medium.com/coinmonks/ethereum-tutorial-sending-transaction-via-nodejs-backend-7b623b885707
 
     //res.end(JSON.stringify(data));
-    res.end( wrappedDocument );
+    res.end( JSON.stringify( wrappedDocument ) );
 })
 
 var server = app.listen(8081, function () {
