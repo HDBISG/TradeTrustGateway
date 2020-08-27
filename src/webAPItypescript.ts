@@ -38,20 +38,30 @@ app.post('/wrap', async function (req:any, res:any) {
     res.end( wrappedDocumen );
 })
 
-app.post('/wrap2', async function(req:any, res:any) {
+app.post('/wrapAwait', async function(req:any, res:any) {
     let data = req.body;
 
     var wrapDocumentn = new wrapper.WrapDocument( );
-    console.log("begin-------------------------------------!");
     var wrappedDocumen = await wrapDocumentn.wrap( data );
-    /*
+
+    res.end( JSON.stringify( wrappedDocumen ) );
+})
+
+
+app.post('/wrapThen', function(req:any, res:any) {
+    let data = req.body;
+
+    var wrapDocumentn = new wrapper.WrapDocument( );
+
     var wrappedDocumentPromise = wrapDocumentn.wrap( data );
     console.log("wrappedDocumentPromise" + wrappedDocumentPromise );
 
-    var wrappedDocumen = wrappedDocumentPromise.then( function(result:string) {
-        return result;
+    var wrappedDocumen ;
+    wrappedDocumentPromise.then( function(result:string) {
+        wrappedDocumen = result;
+        console.log("result" + result );
     })
-    */
+
     res.end( JSON.stringify( wrappedDocumen ) );
 })
 
