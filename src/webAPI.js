@@ -5,7 +5,7 @@ const { wrapDocument, obfuscateDocument, decumentStore } = require("@govtechsg/o
 const util = require("util");
 var path = require('path');
 
-var wrapper = require('./implementations/wrapper');
+var wrapper = require('./implementations/wrapperComponent');
 
 var app = express();
 app.use(bodyParser.json());

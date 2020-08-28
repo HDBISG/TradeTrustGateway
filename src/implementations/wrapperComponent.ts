@@ -4,7 +4,11 @@ const { wrapDocument} = require("@govtechsg/open-attestation");
 
 const util = require("util");
 
-export class WrapDocument {
+export default class WrapComponent {
+
+    constructor() {
+
+    }
 
      wrap(rawData: string): String {
 
@@ -15,12 +19,11 @@ export class WrapDocument {
         return JSON.stringify( wrappedDocument );
     }
 
-     wrapFile(rawFile: string, wrappedFile:string): String {
+    wrapFile(rawFile: string, wrappedFile:string): String {
 
         console.log( "raw " + rawFile );
 
-
-        const document = require("./raw1.json");
+        const document = require( rawFile );
 
         console.log( "document= " + JSON.stringify( document ) );
 
@@ -29,12 +32,12 @@ export class WrapDocument {
 
         console.log( "wrappedDocument " + JSON.stringify( wrappedDocument ) );
 
-        fs.writeFileSync( wrappedFile, wrapDocument );
+        fs.writeFileSync( wrappedFile, JSON.stringify( wrappedDocument ) );
 
         return wrappedDocument;
     }
-    
-    
+
+    /*
      wrapFile2(rawFile: string, wrappedFile:string): String {
 
         console.log( "raw " + rawFile );
@@ -52,7 +55,6 @@ export class WrapDocument {
         //var wrappedDocument = wrapDocument( document );
         var wrappedDocument = wrapDocument( JSON.stringify( document ) );
         console.log( "wrappedDocument " +  JSON.stringify( wrappedDocument ) );
-/*
 
         console.log( rawData );
 
@@ -60,7 +62,7 @@ export class WrapDocument {
         console.log(   rawData.toString  );
         console.log(   rawData.toString()  );
         console.log(  JSON.stringify( rawData.toString() ) );
-*/
+
         var rawDataReplace =  rawData.toString()
         console.log(  typeof rawData   );
         console.log(  typeof rawDataReplace   );
@@ -76,7 +78,5 @@ export class WrapDocument {
 
         return wrappedDocument;
     }
-
+*/
 }
-
- new WrapDocument().wrapFile2("./resource/raw1.json","./resource/wrapped1.json");

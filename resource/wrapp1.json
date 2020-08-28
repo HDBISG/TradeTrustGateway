@@ -1,9 +1,1 @@
-function (data, options) {
-    var _a;
-    var document = createDocument(data, options);
-    var errors = schema_1.validateSchema(document, schema_1.getSchema((_a = options === null || options === void 0 ? void 0 : options.version) !== null && _a !== void 0 ? _a : defaultVersion));
-    if (errors.length > 0) {
-        throw new SchemaValidationError("Invalid document", errors, document);
-    }
-    return signature_1.wrap(document, [digest_1.digestDocument(document)]);
-}
+{"version":"https://schema.openattestation.com/2.0/schema.json","data":{"issuers":[{"documentStore":"9d64ce05-bce3-4196-9722-a40ddd32b4e8:string:0xabcdabcdabcdabcdabcdabcdabcdabcdabcdabcd","name":"7e616fc0-7b53-4011-9799-d8549be84214:string:University of Blockchain","identityProof":{"type":"496663f2-cd64-44a5-86b5-a11204ac295a:string:DNS-TXT","location":"21226480-3ce6-4cec-9b2e-b70ce108cf95:string:example.com"}}]},"signature":{"type":"SHA3MerkleProof","targetHash":"bebefbbe2888fff27c2ff3aced6bf527338ea9e0b4685de25f417a0efb6cf53b","proof":[],"merkleRoot":"bebefbbe2888fff27c2ff3aced6bf527338ea9e0b4685de25f417a0efb6cf53b"}}
