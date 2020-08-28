@@ -11,7 +11,7 @@ const getKeyFromFile = (file?: string): undefined | string => {
   return file ? readFileSync(file).toString() : undefined;
 };
 
-export const getPrivateKey = ({ keyFile, key }: WalletOption): string | undefined => {
+export const getPrivateKey = ({ keyFile, key, password }: WalletOption): string | undefined => {
   if (key) {
     signale.warn(
       "Be aware that by using the `key` parameter, the private key may be stored in your machine's sh history"
@@ -24,6 +24,7 @@ export const getPrivateKey = ({ keyFile, key }: WalletOption): string | undefine
 };
 export const getWallet = async ({
   keyFile,
+  password,
   key,
   network,
   encryptedWalletPath,
@@ -35,14 +36,14 @@ export const getWallet = async ({
       : getDefaultProvider(network === "mainnet" ? "homestead" : network); // homestead => aka mainnet
   if (encryptedWalletPath) {
     //const { password } = await inquirer.prompt({ type: "password", name: "password", message: "Wallet password" });
-    var   password  = "abc";
+    //var   password  = "abc";
     //const file = await readFile(encryptedWalletPath);
       const file = fs.readFileSync(encryptedWalletPath, "utf8");
     const wallet = await ethers.Wallet.fromEncryptedJson(file, password, progress);
     signale.info("Wallet successfully decrypted");
     return wallet.connect(provider);
   } else {
-    const privateKey = getPrivateKey({ key, keyFile });
+    const privateKey = getPrivateKey({ key, keyFile, password });
 
     if (!privateKey)
       throw new Error(
