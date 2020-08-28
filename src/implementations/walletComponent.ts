@@ -1,8 +1,5 @@
 import { ethers } from "ethers";
 import { progress as defaultProgress } from "./utils/progress";
-import  TopupImplement  from "./topup";
-
-
 
 export default  async function createWallet( password:string ): Promise<string> {
     console.log("createWallet begin.");
