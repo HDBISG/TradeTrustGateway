@@ -1,0 +1,9 @@
+function (data, options) {
+    var _a;
+    var document = createDocument(data, options);
+    var errors = schema_1.validateSchema(document, schema_1.getSchema((_a = options === null || options === void 0 ? void 0 : options.version) !== null && _a !== void 0 ? _a : defaultVersion));
+    if (errors.length > 0) {
+        throw new SchemaValidationError("Invalid document", errors, document);
+    }
+    return signature_1.wrap(document, [digest_1.digestDocument(document)]);
+}
