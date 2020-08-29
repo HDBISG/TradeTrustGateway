@@ -5,7 +5,7 @@ import signale from "signale";
 export default async function topupWallet(walletAddress: string): Promise<string> {
 
     console.log("topup address : " + walletAddress);
-    console.log("topup address : " + 'https://faucet.ropsten.be/donate/${walletAddress}' );
+    console.log("topup address : " + 'https://faucet.ropsten.be/donate/' + walletAddress );
     var url = 'https://faucet.ropsten.be/donate/' + walletAddress;
     console.log("topup address : " + url);
 

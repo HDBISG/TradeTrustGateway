@@ -29,8 +29,14 @@ app.post('/createWallet', async function (req:Request, res:Response) {
     res.end(  walletJson  );
 })
 
-app.post('/topUp', function (req:any, res:any) {
+app.post('/topUp', async function (req:any, res:any) {
 
+    var walletAddress:string = req.query.walletAddress as string;
+
+    var tradeTrustService = new TradeTrustService();
+    var topUpresult = await tradeTrustService.topupWallet(walletAddress);
+
+    res.end(  topUpresult  );
 })
 
 app.post('/deployDocStore', function (req:any, res:any) {
