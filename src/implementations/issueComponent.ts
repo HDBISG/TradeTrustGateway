@@ -4,12 +4,16 @@ import signale from "signale";
 import { getWallet } from "./utils/wallet";
 
 
-export default async function issueDocument ( encryptedWalletPath:string, password:string, address:string, hash:string ): Promise<{ contractAddress: string }>{
+export default async function issueDocument ( 
+  encryptedWalletPath:string, encryptedWalletJson:string, password:string
+  , address:string, hash:string ): Promise<{ contractAddress: string }>{
 
     var gasPriceScale = 1;
     // var nework = "ropsten"
 
-    const wallet = await getWallet({ key:'', keyFile:'', "password":password, network:"ropsten", "encryptedWalletPath":encryptedWalletPath });
+    const wallet = await getWallet({ key:'', keyFile:'', "password":password
+      , network:"ropsten", "encryptedWalletPath":encryptedWalletPath
+      , "encryptedWalletJson":encryptedWalletJson });
 
     const gasPrice = await wallet.provider.getGasPrice();
     signale.await(`Sending transaction to pool`);

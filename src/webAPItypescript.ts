@@ -64,6 +64,21 @@ app.post('/wrap', function (req:any, res:Response) {
 })
 
 
+app.post('/issue', async function (req:Request, res:Response) {
+
+    var encryptedWalletJson:string = req.body;
+    const walletPassword:string = req.query.walletPassword as string;
+    const documentStoreAddress:string = req.query.documentStoreAddress as string;
+    const wrappedHash:string = req.query.wrappedHash as string;
+
+    encryptedWalletJson = JSON.stringify( encryptedWalletJson );
+
+    var tradeTrustService = new TradeTrustService();
+    var deployDocumentJson = await tradeTrustService.issue(
+        encryptedWalletJson, walletPassword, documentStoreAddress, wrappedHash );
+
+    res.end( deployDocumentJson );
+})
 
 app.post('/publish', function (req:any, res:any) {
     let data = req.body;

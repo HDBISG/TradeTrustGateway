@@ -1,7 +1,7 @@
 import createWallet  from "../src/implementations/walletComponent";
 import topupWallet  from "../src/implementations/topupComponent";
 import deployDocumentStore  from "../src/implementations/deployDocumenComponent";
-
+import issueComponent  from "../src/implementations/issueComponent";
 
 export default class TradeTrustService {
 
@@ -37,5 +37,14 @@ export default class TradeTrustService {
         const wrappedDocumentJson = wrapDocument.wrapFileJson( rawFileJson );
 
         return wrappedDocumentJson;
+    }
+    // 5: 
+    async issue( walletJson:string, walletPassword:string,
+        documentStoreAddress:string, wrappedHash:string ): Promise<string> {
+    
+        var issueResult = await issueComponent( "", walletJson, walletPassword
+        , documentStoreAddress, wrappedHash );
+
+        return JSON.stringify( issueResult );
     }
 }
