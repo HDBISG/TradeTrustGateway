@@ -1,17 +1,32 @@
-var express = require('express');
+//var express  = require('express');
+import express, { Request, Response } from "express";
 var bodyParser = require('body-parser');
-
 const { wrapDocument, obfuscateDocument, decumentStore } = require("@govtechsg/open-attestation");
 const util = require("util");
 var path = require('path');
 
-var wrapper = require('./implementations/wrapper');
+
+var wrapper = require('./implementations/wrapperComponent');
+import TradeTrustService  from "./TradeTrustService";
 
 var app = express();
 app.use(bodyParser.json());
 
-app.post('/createWallet', function (req:any, res:any) {
 
+app.post('/createWallet', async function (req:Request, res:Response) {
+    
+    console.log("req.params = " + JSON.stringify( req.params ) );
+    console.log("req.query = " + JSON.stringify( req.query ) );
+    // req.param("password");
+    var password:string = req.query.password as string;
+    // password = req.param("password");
+
+    console.log("password = " + password);
+
+    var tradeTrustService = new TradeTrustService();
+    var walletJson = await tradeTrustService.createWallet( password );
+
+    res.end(  walletJson  );
 })
 
 app.post('/topUp', function (req:any, res:any) {
@@ -79,8 +94,6 @@ app.post('/publish', function (req:any, res:any) {
     res.end( JSON.stringify( wrappedDocument ) );
 })
 
-var server = app.listen(8081, function () {
-    var host = server.address().address
-    var port = server.address().port
-    console.log("Example app listening at http://%s:%s", host, port)
+app.listen(8081, function () {
+    console.log("Example app listening at 8081");
 })
