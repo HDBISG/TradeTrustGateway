@@ -2,6 +2,7 @@ import createWallet  from "../src/implementations/walletComponent";
 import topupWallet  from "../src/implementations/topupComponent";
 import deployDocumentStore  from "../src/implementations/deployDocumenComponent";
 
+
 export default class TradeTrustService {
 
     // 1: 
@@ -26,5 +27,15 @@ export default class TradeTrustService {
         var deployDocumentJson = await deployDocumentStore( "", walletJson, walletPassword);
 
         return deployDocumentJson;
+    }
+
+    // 4: 
+    wrapFileJson( rawFileJson: any ): string {
+
+        var wrapper = require('../src/implementations/wrapperComponent').default;
+        var wrapDocument = new wrapper();
+        const wrappedDocumentJson = wrapDocument.wrapFileJson( rawFileJson );
+
+        return wrappedDocumentJson;
     }
 }

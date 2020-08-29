@@ -53,47 +53,17 @@ app.post('/deployDocStore', async function (req:Request, res:Response) {
 })
 
 
-app.post('/wrap', async function (req:any, res:any) {
+app.post('/wrap', function (req:any, res:Response) {
     let data = req.body;
 
-    var wrapDocument = new wrapper.WrapDocument();
-    var rawPath = path.normalize( "/workspace_vs/TradeTrustGateway/resource/raw1.json" ); 
-    var wrapPath = path.normalize( "/workspace_vs/TradeTrustGateway/resource/wrapp1.json" ); 
-    var wrappedDocumentPromise = wrapDocument.wrapFile( rawPath, wrapPath );
+    var tradeTrustService = new TradeTrustService();
+    const wrappedDocumentJson = tradeTrustService.wrapFileJson(  data );
+    console.log(  wrappedDocumentJson);
 
-    var wrappedDocumen = wrappedDocumentPromise.then( function(result:string) {
-        return result;
-    })
-
-    res.end( wrappedDocumen );
-})
-
-app.post('/wrapAwait', async function(req:any, res:any) {
-    let data = req.body;
-
-    var wrapDocumentn = new wrapper.WrapDocument( );
-    var wrappedDocumen = await wrapDocumentn.wrap( data );
-
-    res.end( JSON.stringify( wrappedDocumen ) );
+    res.end( JSON.stringify( wrappedDocumentJson ) );
 })
 
 
-app.post('/wrapThen', function(req:any, res:any) {
-    let data = req.body;
-
-    var wrapDocumentn = new wrapper.WrapDocument( );
-
-    var wrappedDocumentPromise = wrapDocumentn.wrap( data );
-    console.log("wrappedDocumentPromise" + wrappedDocumentPromise );
-
-    var wrappedDocumen ;
-    wrappedDocumentPromise.then( function(result:string) {
-        wrappedDocumen = result;
-        console.log("result" + result );
-    })
-
-    res.end( JSON.stringify( wrappedDocumen ) );
-})
 
 app.post('/publish', function (req:any, res:any) {
     let data = req.body;

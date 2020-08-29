@@ -1,14 +1,10 @@
 import fs from "fs";
 
-const { wrapDocument} = require("@govtechsg/open-attestation");
+const { wrapDocument } = require("@govtechsg/open-attestation");
 
 const util = require("util");
 
 export default class WrapComponent {
-
-    constructor() {
-
-    }
 
      wrap(rawData: string): String {
 
@@ -19,20 +15,30 @@ export default class WrapComponent {
         return JSON.stringify( wrappedDocument );
     }
 
-    wrapFile(rawFile: string, wrappedFile:string): String {
+    wrapFileJson(rawFileJson: any ): string {
 
-        console.log( "raw " + rawFile );
+        console.log( "raw " + rawFileJson );
 
-        const document = require( rawFile );
+        const wrappedDocumentJson = wrapDocument( rawFileJson  );
+        //const wrappedDocument = wrapDocument( rawData );
+        console.log( "wrappedDocument " + JSON.stringify( wrappedDocumentJson ) );
 
-        console.log( "document= " + JSON.stringify( document ) );
+        return wrappedDocumentJson;
+    }
+
+    wrapFile(rawFilePath: string, wrappedFilePath:string): String {
+
+        console.log( "raw " + rawFilePath );
+
+        const document = require( rawFilePath );
+
 
         const wrappedDocument = wrapDocument( document  );
         //const wrappedDocument = wrapDocument( rawData );
 
         console.log( "wrappedDocument " + JSON.stringify( wrappedDocument ) );
 
-        fs.writeFileSync( wrappedFile, JSON.stringify( wrappedDocument ) );
+        fs.writeFileSync( wrappedFilePath, JSON.stringify( wrappedDocument ) );
 
         return wrappedDocument;
     }
