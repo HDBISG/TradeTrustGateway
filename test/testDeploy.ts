@@ -1,6 +1,6 @@
 import deployDocumentStore  from "../src/implementations/deployDocumenComponent";
 
-var deployDocument = deployDocumentStore("abc","./resource/wallet.json");
+var deployDocument = deployDocumentStore("./resource/wallet.json","","abc");
 
 deployDocument.then( function(result:string) {
 

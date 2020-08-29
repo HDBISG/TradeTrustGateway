@@ -1,5 +1,6 @@
 import createWallet  from "../src/implementations/walletComponent";
 import topupWallet  from "../src/implementations/topupComponent";
+import deployDocumentStore  from "../src/implementations/deployDocumenComponent";
 
 export default class TradeTrustService {
 
@@ -11,11 +12,19 @@ export default class TradeTrustService {
         return walletJson;
     }
 
-    // 1: 
+    // 2: 
     async topupWallet( walletAddress:string ): Promise<string> {
 
         var topUpresult = await topupWallet( walletAddress );
         
         return topUpresult;
+    }
+
+    // 3: 
+    async deployDocumentStore( walletJson:string, walletPassword:string ): Promise<string> {
+    
+        var deployDocumentJson = await deployDocumentStore( "", walletJson, walletPassword);
+
+        return deployDocumentJson;
     }
 }

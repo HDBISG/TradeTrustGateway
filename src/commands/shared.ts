@@ -11,6 +11,7 @@ export interface PrivateKeyOption {
 
 export interface WalletOption extends PrivateKeyOption {
   encryptedWalletPath?: string;
+  encryptedWalletJson?: string;
   password: string;
 }
 

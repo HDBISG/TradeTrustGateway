@@ -29,7 +29,7 @@ app.post('/createWallet', async function (req:Request, res:Response) {
     res.end(  walletJson  );
 })
 
-app.post('/topUp', async function (req:any, res:any) {
+app.post('/topUp', async function (req:Request, res:Response) {
 
     var walletAddress:string = req.query.walletAddress as string;
 
@@ -39,8 +39,17 @@ app.post('/topUp', async function (req:any, res:any) {
     res.end(  topUpresult  );
 })
 
-app.post('/deployDocStore', function (req:any, res:any) {
+app.post('/deployDocStore', async function (req:Request, res:Response) {
 
+    var encryptedWalletJson:string = req.body;
+    var walletPassword:string = req.query.walletPassword as string;
+
+    encryptedWalletJson = JSON.stringify( encryptedWalletJson );
+
+    var tradeTrustService = new TradeTrustService();
+    var deployDocumentJson = await tradeTrustService.deployDocumentStore(encryptedWalletJson, walletPassword );
+
+    res.end( deployDocumentJson );
 })
 
 

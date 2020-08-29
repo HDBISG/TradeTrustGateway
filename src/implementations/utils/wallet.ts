@@ -26,6 +26,7 @@ export const getWallet = async ({
   keyFile,
   password,
   key,
+  encryptedWalletJson,
   network,
   encryptedWalletPath,
   progress = defaultProgress("Decrypting Wallet"),
@@ -40,6 +41,14 @@ export const getWallet = async ({
     //const file = await readFile(encryptedWalletPath);
       const file = fs.readFileSync(encryptedWalletPath, "utf8");
     const wallet = await ethers.Wallet.fromEncryptedJson(file, password, progress);
+    signale.info("Wallet successfully decrypted");
+    return wallet.connect(provider);
+  } if (encryptedWalletJson) {
+
+
+    console.info("--" + encryptedWalletJson)
+    const wallet = await ethers.Wallet.fromEncryptedJson(encryptedWalletJson, password, progress);
+
     signale.info("Wallet successfully decrypted");
     return wallet.connect(provider);
   } else {

@@ -3,13 +3,18 @@ import signale from "signale";
 import { getWallet } from "./utils/wallet";
 
 
-export default async function deployDocumentStore( password1:string, encryptedWalletPath:string ): Promise< string > {
+export default async function deployDocumentStore( 
+     encryptedWalletPath:string, encryptedWalletJson:string,
+     password:string, ): Promise< string > {
+
     console.log("deployDocumentStore begin.");
 
     var storeName = 'MyFirstDocumentStore';
     var gasPriceScale = 1;
 
-    const wallet = await getWallet({ key: '', keyFile: '', password:"abc", network: "ropsten", "encryptedWalletPath": encryptedWalletPath });
+    const wallet = await getWallet({ key: '', keyFile: '', "password":password
+        , network: "ropsten", "encryptedWalletPath": encryptedWalletPath
+        , "encryptedWalletJson":encryptedWalletJson });
 
     const gasPrice = await wallet.provider.getGasPrice();
 
