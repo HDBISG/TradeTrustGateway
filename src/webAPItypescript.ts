@@ -26,6 +26,11 @@ app.post('/createWallet', async function (req:Request, res:Response) {
     var tradeTrustService = new TradeTrustService();
     var walletJson = await tradeTrustService.createWallet( password );
 
+    if( ! walletJson) {
+        res.writeHead(503);
+        res.end();
+        return;
+    }
     res.end(  walletJson  );
 })
 
@@ -33,10 +38,20 @@ app.post('/topUp', async function (req:Request, res:Response) {
 
     var walletAddress:string = req.query.walletAddress as string;
 
+    // validation;
+    if(!walletAddress) {
+        res.writeHead(400);
+        res.end();
+        return;
+    }
     var tradeTrustService = new TradeTrustService();
     var topUpresult = await tradeTrustService.topupWallet(walletAddress);
 
-    res.end(  topUpresult  );
+    if( !topUpresult ) {
+        res.end( generateResponseJson("failed to topup","") );
+        return;
+    }
+    res.end(  generateResponseJson("","topup successful.")  );
 })
 
 app.post('/deployDocStore', async function (req:Request, res:Response) {
@@ -93,6 +108,17 @@ app.post('/publish', function (req:any, res:any) {
     //res.end(JSON.stringify(data));
     res.end( JSON.stringify( wrappedDocument ) );
 })
+
+var generateResponseJson = function( errorMsg:string, result:string) {
+
+    var resultJson = { status:"","errorMsg":errorMsg,"result":result};
+
+    resultJson.status = errorMsg ? "failed":"ok";
+
+    console.log("generateResponseJson= " + JSON.stringify(resultJson) );
+
+    return JSON.stringify(resultJson);
+}
 
 app.listen(8081, function () {
     console.log("Example app listening at 8081");

@@ -7,18 +7,26 @@ export default class TradeTrustService {
 
     // 1: 
     async createWallet( password:string ): Promise<string> {
+        try {
+            var walletJson = await createWallet( password );
 
-        var walletJson = await createWallet( password );
-
-        return walletJson;
+            return walletJson;
+        } catch(e) {
+            console.error('Error create wallet:', e);
+        }
+        return "";
     }
 
     // 2: 
-    async topupWallet( walletAddress:string ): Promise<string> {
-
-        var topUpresult = await topupWallet( walletAddress );
-        
-        return topUpresult;
+    async topupWallet( walletAddress:string ): Promise<boolean> {
+        try {
+            var topUpresult = await topupWallet( walletAddress );
+            
+            return topUpresult;
+        } catch(e) {
+            console.error('Error topup:', e);
+        }
+        return false;
     }
 
     // 3: 
