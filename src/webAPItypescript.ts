@@ -1,13 +1,13 @@
 //var express  = require('express');
 import express, { Request, Response } from "express";
-var bodyParser = require('body-parser');
+import TradeTrustService  from "./TradeTrustService";
+import {isEmpty} from "./implementations/utils/TradeTrustUtil"
 const { wrapDocument, obfuscateDocument, decumentStore } = require("@govtechsg/open-attestation");
+
+var bodyParser = require('body-parser');
 const util = require("util");
 var path = require('path');
-
-
 var wrapper = require('./implementations/wrapperComponent');
-import TradeTrustService  from "./TradeTrustService";
 
 var app = express();
 app.use(bodyParser.json());
@@ -71,11 +71,22 @@ app.post('/deployDocStore', async function (req:Request, res:Response) {
 app.post('/wrap', function (req:any, res:Response) {
     let data = req.body;
 
-    var tradeTrustService = new TradeTrustService();
-    const wrappedDocumentJson = tradeTrustService.wrapFileJson(  data );
-    console.log(  wrappedDocumentJson);
+    // validation;
+    console.log(  !data + "  " + JSON.stringify( data ) );
+    if( isEmpty(data) ) {
+        res.writeHead(400);
+        res.end();
+        return;
+    }
 
-    res.end( JSON.stringify( wrappedDocumentJson ) );
+    try {
+        var tradeTrustService = new TradeTrustService();
+        const wrappedDocumentJson = tradeTrustService.wrapFileJson(  data );
+        console.log(  wrappedDocumentJson);
+        res.end( generateResponseJson("", wrappedDocumentJson )  );
+    }catch( e ) {
+        res.end( generateResponseJson( e.message, "" )  );
+    }
 })
 
 
