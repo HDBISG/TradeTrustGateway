@@ -6,15 +6,6 @@ const util = require("util");
 
 export default class WrapComponent {
 
-     wrap(rawData: string): String {
-
-        console.log( "raw  ---" + ( typeof rawData ) + "  " + JSON.stringify( rawData ) );
-        const wrappedDocument = wrapDocument( rawData );
-        console.log( "wrappedDocument    " + JSON.stringify( wrappedDocument ) );
-
-        return JSON.stringify( wrappedDocument );
-    }
-
     wrapFileJson(rawFileJson: any ): string {
 
         console.log( "raw " + rawFileJson );
