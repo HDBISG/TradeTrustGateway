@@ -21,7 +21,7 @@ import {
     DocumentDetails,
   } from "../../src/share/share";
 
-var walletRequest: WalletRequest = { accountId:"accn1", password:"pwd1"};
+var walletRequest: WalletRequest = { accountId:"accn3", password:"pwd1"};
 
 var tradeTrustService = new TradeTrustService();
 var ServiceResponse = tradeTrustService.createWallet( walletRequest );

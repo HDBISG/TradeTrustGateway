@@ -11,14 +11,14 @@ export default class TTRepositoryService {
   private mysql: any = require("mysql");
   private pool: any;
 
-  TTRepositoryService() {
+  constructor() {
     log("TTRepositoryService");
     this.pool = this.mysql.createPool({
       connectionLimit: 20, //important
-      host: "localhost",
-      user: "root",
-      password: "root",
-      database: "tradetrust",
+      host: 'localhost',
+      user: 'root',
+      password: 'root',
+      database: 'tradetrust',
       debug: false,
     });
   }
@@ -36,8 +36,8 @@ export default class TTRepositoryService {
 
       let dtNow: string = TTRepositoryService.getNow();
       let insertQuery: string =
-        "INSERT INTO ?? (??,??,??,??,??,??,??,??,??) VALUES ??,??,??,??,??,??,??,??,??)";
-      let query: any = this.mysql.format(insertQuery, [
+        'INSERT INTO ?? (??,??,??,??,??,??,??,??,??) VALUES ( ?,?,?, ?,?,?, ?,?,?)';
+      let sql: any = this.mysql.format(insertQuery, [
         "T_TTGW_WALLET",
         "WALLET_ACCN_ID", // primary key
         "WALLET_ADDR",
@@ -58,7 +58,10 @@ export default class TTRepositoryService {
         "SYS",
         dtNow,
       ]);
-      this.pool.query(query, (err: any, response: any) => {
+
+     //  log(  this.pool);
+
+      var query = this.pool.query(sql, (err: any, response: any) => {
         if (err) {
           svcResponse.status = Status.ERROR;
           svcResponse.msg = err.message;
@@ -66,7 +69,13 @@ export default class TTRepositoryService {
           svcResponse.status = Status.SUCCESS;
           svcResponse.details = response.insertId;
         }
+
+        log( `err: ${err}`);
+        log( `response: ${response}`);
+
       });
+      console.log(query.sql);
+
     } catch (error) {
       svcResponse.status = Status.ERROR;
       svcResponse.msg = error.message;
@@ -315,8 +324,12 @@ export default class TTRepositoryService {
    * Get the time now
    */
   private static getNow(): string {
-    var dtNow = new Date();
-    return `${dtNow.toISOString().slice(0, 10)} ${dtNow.getTime()}`;
+    //var dtNow = new Date();
+    //return `${dtNow.toISOString().slice(0, 10)} ${dtNow.getTime()}`;
+    // log( dtNow.toISOString().slice(0, 19).replace('T', ' ') );
+    var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+    var localISOTime = (new Date(Date.now() - tzoffset)).toISOString();
+    return localISOTime.slice(0, 19).replace('T', ' ');
   }
 
   /**
