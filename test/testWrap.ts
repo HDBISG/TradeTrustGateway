@@ -1,6 +1,11 @@
-import wrapperComponent  from "../src/implementations/wrapperComponent";
-var wrapper = require('../src/implementations/wrapperComponent').default;
+import WrapDocument  from "../src/components/wrappDocument";
+import { WrapResponse, log, Status } from "../src/share/share";
+var wrapper = require('../src/components/wrappDocument').default;
 
-var wrapDocument = new wrapper();
+var wrapDocument = new WrapDocument();
 
-wrapDocument.wrapFile( "../../resource/raw1.json" , "./resource/wrapp1.json" );
+const document = require("../resource/raw.json");
+
+var wrapResponse = wrapDocument.wrap(  document  );
+
+console.log( wrapResponse);

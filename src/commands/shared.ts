@@ -10,8 +10,7 @@ export interface PrivateKeyOption {
 }
 
 export interface WalletOption extends PrivateKeyOption {
-  encryptedWalletPath?: string;
-  encryptedWalletJson?: string;
+  encryptedWalletJson: string;
   password: string;
 }
 
@@ -65,4 +64,5 @@ export const withWalletOption = (yargs: Argv): Argv =>
       normalize: true,
     })
   );
-export const withNetworkAndKeyOption = (yargs: Argv): Argv => withNetworkOption(withWalletOption(yargs));
+export const withNetworkAndKeyOption = (yargs: Argv): Argv =>
+  withNetworkOption(withWalletOption(yargs));

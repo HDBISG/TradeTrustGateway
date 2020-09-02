@@ -1,9 +1,11 @@
-import createWallet  from "../src/implementations/walletComponent";
+import createWallet  from "../src/components/createWallet";
+import { Status, WalletRequest, WalletResponse, log } from "../src/share/share";
 
-var walletJson =  createWallet("abc");
+var walletRequest: WalletRequest = { accountId:"accn1", password:"pwd1"};
 
-walletJson.then( function(result:string) {
+var walletJson =  createWallet( walletRequest );
 
-    var walletJsonObj = JSON.parse( result );
-    console.log(walletJsonObj.address);
+walletJson.then( function( walletResponse:WalletResponse ) {
+
+    console.log(  walletResponse );
 })

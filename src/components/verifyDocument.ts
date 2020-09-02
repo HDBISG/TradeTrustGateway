@@ -6,7 +6,6 @@ const util = require("util");
 
 export default class VerifyComponent {
 
-
     async verifyFileJson(verifyFileJson: string ): Promise<boolean> {
 
         console.log( "verifyFileJson " + verifyFileJson );

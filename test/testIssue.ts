@@ -1,3 +1,23 @@
-import issueComponent  from "../src/implementations/issueComponent";
+import issueDocument  from "../src/components/issueDocument";
 
-issueComponent("./resource/wallet.json","","abc","0x1edfEa4A2205E85031d5A8a346386dd6921ff9bB","0x6a71f410b31793a5b186b3cb3a2df88c7d099dc8d81f02e41b2d15d09e9637a0" );
+import {
+    Status,
+    IssueRequest,
+    IssueResponse,
+    getWallet,
+    log,
+  } from "../src/share/share";
+
+  
+var issueRequest: IssueRequest = { wrappedHash:"0x876d09feddf23bdcb3adb9f3958ba513971c0efc6ad0f06edc31cfbd7460bd94", network:"ropsten"
+, wallet:{ accountId:"accn1", password:"abc", address:"", jsonEncrpyted:"" }
+, documentStore:{ "accountId":"accn1", "storeName":"Test", "address":"0xa3D1419975B497a52ba8be71091dCa412D094FA2", "network":"ropsten" } };
+
+const document = require("../resource/wallet.json");
+log(document);
+// log(JSON.parse( document ) ) ;
+
+issueRequest.wallet.jsonEncrpyted = JSON.stringify( document );
+issueRequest.wallet.address = document.address;
+
+issueDocument( issueRequest );

@@ -1,8 +1,11 @@
-import topupWallet  from "../src/implementations/topupComponent";
+import topupWallet  from "../src/components/topupWallet";
+import { Status, TopUpRequest, TopUpResponse, log } from "../src/share/share";
 
-var topUpresult =  topupWallet("9f5553bec2be0e583841119946f70944d5bf9e25");
+var topUpRequest: TopUpRequest = { accountId:"accn1", walletAddress:"dff784202117153847401c522c733e25bb976f66",ether:1 };
 
-topUpresult.then( function(result:string) {
+var topUpresult =  topupWallet( topUpRequest );
+
+topUpresult.then( function(result:TopUpResponse) {
 
     console.log( result );
 })
