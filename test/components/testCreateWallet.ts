@@ -1,5 +1,5 @@
-import createWallet  from "../src/components/createWallet";
-import { Status, WalletRequest, WalletResponse, log } from "../src/share/share";
+import createWallet  from "../../src/components/createWallet";
+import { Status, WalletRequest, WalletResponse, log } from "../../src/share/share";
 
 var walletRequest: WalletRequest = { accountId:"accn1", password:"pwd1"};
 

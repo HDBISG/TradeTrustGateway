@@ -1,4 +1,4 @@
-import issueDocument  from "../src/components/issueDocument";
+import issueDocument  from "../../src/components/issueDocument";
 
 import {
     Status,
@@ -6,7 +6,7 @@ import {
     IssueResponse,
     getWallet,
     log,
-  } from "../src/share/share";
+  } from "../../src/share/share";
 
   
 var issueRequest: IssueRequest = { wrappedHash:"0x876d09feddf23bdcb3adb9f3958ba513971c0efc6ad0f06edc31cfbd7460bd94", network:"ropsten"

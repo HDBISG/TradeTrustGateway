@@ -17,8 +17,8 @@ export default class TTRepositoryService {
       connectionLimit: 20, //important
       host: "localhost",
       user: "root",
-      password: "password",
-      database: "camelone",
+      password: "root",
+      database: "tradetrust",
       debug: false,
     });
   }

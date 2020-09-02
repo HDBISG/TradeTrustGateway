@@ -1,4 +1,4 @@
-import deployDocumentStore  from "../src/components/deployDocumentStore";
+import deployDocumentStore  from "../../src/components/deployDocumentStore";
 
 import {
     Status,
@@ -6,7 +6,7 @@ import {
     DeployResponse,
     getWallet,
     log,
-  } from "../src/share/share";
+  } from "../../src/share/share";
 
 
 var deployRequest: DeployRequest = { accountId:"accn1", docStoreName:"MyTestStore", network:"ropsten"
