@@ -43,11 +43,10 @@ export default class TradeTrustService {
       if (!walletDetails) throw new Error("wallDetails null");
 
       // Insert wallet into T_TTGW_WALLET
-      var repoService1: TTRepositoryService = new TTRepositoryService();
-      var repoSvcResponse: ServiceResponse = await repoService1.insertWallet(
+      var repoSvcResponse: ServiceResponse = await this.repoService.insertWallet(
         walletDetails
       );
-      
+
       if (repoSvcResponse.status != Status.SUCCESS) {
         throw new Error(`repoSvc: ${repoSvcResponse.msg}`);
       }
