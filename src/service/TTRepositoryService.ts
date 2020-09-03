@@ -159,8 +159,8 @@ export default class TTRepositoryService {
 
       let dtNow: string = TTRepositoryService.getNow();
       let insertQuery: string =
-        "INSERT INTO ?? (??,??,??, ??,??,??, ??,??,??) VALUES ?,?,? ,?,?,?, ?,?,?)";
-      let query: any = this.mysql.format(insertQuery, [
+        "INSERT INTO ?? (??,??,??, ??,??,??, ??,??,??) VALUES ( ?,?,? ,?,?,?, ?,?,?)";
+      let sql: any = this.mysql.format(insertQuery, [
         "T_TTGW_DOCSTORE",
         "DOCSTORE_ACCN_ID", // primary key
         "DOCSTORE_NAME", // primary key
@@ -181,15 +181,14 @@ export default class TTRepositoryService {
         "SYS",
         dtNow,
       ]);
-      this.pool.query(query, (err: any, response: any) => {
-        if (err) {
-          svcResponse.status = Status.ERROR;
-          svcResponse.msg = err.message;
-        } else {
-          svcResponse.status = Status.SUCCESS;
-          svcResponse.details = response.insertId;
-        }
-      });
+
+     //  log(  this.pool);
+     console.log(sql);
+
+     var query = await this.pool.query(sql);
+
+     svcResponse.status = Status.SUCCESS;
+
     } catch (error) {
       svcResponse.status = Status.ERROR;
       svcResponse.msg = error.message;

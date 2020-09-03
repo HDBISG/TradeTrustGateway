@@ -42,10 +42,11 @@ export default async function deployDocumentStore(
     const transaction = await factory.deploy(deployRequest.docStoreName, {
       gasPrice: gasPrice.mul(gasPriceScale),
     });
+    log(`details: ${JSON.stringify(transaction.deployTransaction)}`);
 
     const details: { hash: string; blockNumber: string } =
       transaction.deployTransaction;
-    log(`details: ${JSON.stringify(details)}`);
+    // log(`details: ${JSON.stringify(details)}`);
 
     signale.await(`Waiting ${transaction.deployTransaction.hash} to be mined`);
     const documentStore = await transaction.deployTransaction.wait();
@@ -59,6 +60,7 @@ export default async function deployDocumentStore(
       network: deployRequest.network,
     };
   } catch (error) {
+    console.log(error.stack);
     deployResponse.status = Status.ERROR;
     deployResponse.msg = error.message;
   }

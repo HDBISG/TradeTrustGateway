@@ -92,16 +92,17 @@ app.post("/topUp", async function (req: Request, res: Response) {
 
 
 app.post("/deployDocStore", async function (req: Request, res: Response) {
-  let deployRequest = req.body;
+  let serviceDeployRequest = req.body;
 
-  if ( !deployRequest || !deployRequest.accountId || !deployRequest.password )  {
+  if ( !serviceDeployRequest || !serviceDeployRequest.accountId
+       || !serviceDeployRequest.docStoreName || !serviceDeployRequest.network )  {
     res.status(400);
     res.send('Parameter is not correct.');
     res.end();
     return;
   }
 
-  var serviceResponse = await tradeTrustService.deployDocumentStore( deployRequest );
+  var serviceResponse = await tradeTrustService.deployDocumentStore( serviceDeployRequest );
 
   log( `serviceResponse.status:    ${serviceResponse.status}`);
 

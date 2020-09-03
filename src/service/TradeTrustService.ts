@@ -158,7 +158,7 @@ export default class TradeTrustService {
       }
 
       svcResponse.status = Status.SUCCESS;
-      svcResponse.details = repoSvcResponse.details; // returns the record id
+      svcResponse.details = JSON.stringify( documentStoreDetails ); // returns the record id
     } catch (error) {
       svcResponse.status = Status.ERROR;
       svcResponse.msg = error.message;

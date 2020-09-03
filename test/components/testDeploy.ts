@@ -12,7 +12,7 @@ import {
 var deployRequest: DeployRequest = { accountId:"accn1", docStoreName:"MyTestStore", network:"ropsten"
     , wallet:{ accountId:"accn1", password:"abc", address:"", jsonEncrpyted:"" } };
 
-const document = require("../resource/wallet.json");
+const document = require("../../resource/wallet.json");
 log(document);
 // log(JSON.parse( document ) ) ;
 
