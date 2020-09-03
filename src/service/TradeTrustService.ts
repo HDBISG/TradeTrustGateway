@@ -20,6 +20,7 @@ import {
   IssueRequest,
   IssueResponse,
   DocumentDetails,
+  WrapRequest
 } from "../share/share";
 import TTRepositoryService from "./TTRepositoryService";
 
@@ -108,6 +109,7 @@ export default class TradeTrustService {
   async deployDocumentStore(
     svcDeployRequest: ServiceDeployRequest
   ): Promise<ServiceResponse> {
+
     log(
       `<deployDocumentStore> svcDeployRequest: ${JSON.stringify(
         svcDeployRequest

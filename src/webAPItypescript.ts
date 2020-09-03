@@ -10,76 +10,135 @@ const {
 
 const util = require("util");
 var path = require("path");
-var wrapper = require("./implementations/wrapperComponent");
+
 import TradeTrustService from "./service/TradeTrustService";
+
+
+import {
+  WalletRequest,
+  ServiceResponse,
+  log,
+  Status,
+  WalletDetails,
+  WalletResponse,
+  TopUpRequest,
+  TopUpResponse,
+  ServiceDeployRequest,
+  DeployRequest,
+  DeployResponse,
+  DocumentStoreDetails,
+  ServiceIssueRequest,
+  IssueRequest,
+  IssueResponse,
+  DocumentDetails,
+} from "../src/share/share";
 
 var app = express();
 app.use(bodyParser.json());
 
+var tradeTrustService = new TradeTrustService();
+
 app.post("/createWallet", async function (req: Request, res: Response) {
-  console.log("params: " + JSON.stringify(req.params));
-  console.log("query: " + JSON.stringify(req.query));
 
-  var accountId: string = req.query.accountId as string;
-  var password: string = req.query.password as string;
+  let walletRequest = req.body;
 
-  var tradeTrustService = new TradeTrustService();
-  var walletJson = await tradeTrustService.createWallet(accountId, password);
+  if ( !walletRequest || !walletRequest.accountId || !walletRequest.password )  {
+    res.status(400);
+    res.send('Parameter is not correct.');
+    res.end();
+    return;
+  }
 
-  res.end(walletJson);
+  var serviceResponse = await tradeTrustService.createWallet( walletRequest );
+
+  log( `serviceResponse.status:    ${serviceResponse.status}`);
+
+  if( serviceResponse.status !=  Status.SUCCESS ) {
+    res.status( 503 );
+    res.send( serviceResponse.msg );
+    return;
+  }
+  log( `serviceResponse.details:    ${serviceResponse.details}`);
+
+  res.end( serviceResponse.details );
 });
+
 
 app.post("/topUp", async function (req: Request, res: Response) {
-  var walletAddress: string = req.query.walletAddress as string;
 
-  var tradeTrustService = new TradeTrustService();
-  var topUpresult = await tradeTrustService.topupWallet(walletAddress);
+  let topUpRequest = req.body;
 
-  res.end(topUpresult);
+  if ( !topUpRequest || !topUpRequest.accountId )  {
+    res.status(400);
+    res.send('Parameter is not correct.');
+    res.end();
+    return;
+  }
+
+  var serviceResponse = await tradeTrustService.topupWallet( topUpRequest );
+
+  log( `serviceResponse.status:    ${serviceResponse.status}`);
+
+  if( serviceResponse.status !=  Status.SUCCESS ) {
+    res.status( 503 );
+    res.send( serviceResponse.msg );
+    return;
+  }
+  log( `serviceResponse.details:    ${serviceResponse.details}`);
+
+  res.end( serviceResponse.details );
+
 });
+
 
 app.post("/deployDocStore", async function (req: Request, res: Response) {
-  var encryptedWalletJson: string = req.body;
-  var walletPassword: string = req.query.walletPassword as string;
+  let deployRequest = req.body;
 
-  encryptedWalletJson = JSON.stringify(encryptedWalletJson);
+  if ( !deployRequest || !deployRequest.accountId || !deployRequest.password )  {
+    res.status(400);
+    res.send('Parameter is not correct.');
+    res.end();
+    return;
+  }
 
-  var tradeTrustService = new TradeTrustService();
-  var deployDocumentJson = await tradeTrustService.deployDocumentStore(
-    encryptedWalletJson,
-    walletPassword
-  );
+  var serviceResponse = await tradeTrustService.deployDocumentStore( deployRequest );
 
-  res.end(deployDocumentJson);
+  log( `serviceResponse.status:    ${serviceResponse.status}`);
+
+  if( serviceResponse.status !=  Status.SUCCESS ) {
+    res.status( 503 );
+    res.send( serviceResponse.msg );
+    return;
+  }
+  log( `serviceResponse.details:    ${serviceResponse.details}`);
+
+  res.end( serviceResponse.details );
 });
 
-app.post("/wrap", function (req: any, res: Response) {
-  let data = req.body;
-
-  var tradeTrustService = new TradeTrustService();
-  const wrappedDocumentJson = tradeTrustService.wrapFileJson(data);
-  console.log(wrappedDocumentJson);
-
-  res.end(JSON.stringify(wrappedDocumentJson));
-});
 
 app.post("/issue", async function (req: Request, res: Response) {
-  var encryptedWalletJson: string = req.body;
-  const walletPassword: string = req.query.walletPassword as string;
-  const documentStoreAddress: string = req.query.documentStoreAddress as string;
-  const wrappedHash: string = req.query.wrappedHash as string;
 
-  encryptedWalletJson = JSON.stringify(encryptedWalletJson);
+  let serviceIssueRequest = req.body;
 
-  var tradeTrustService = new TradeTrustService();
-  var deployDocumentJson = await tradeTrustService.issue(
-    encryptedWalletJson,
-    walletPassword,
-    documentStoreAddress,
-    wrappedHash
-  );
+  if ( !serviceIssueRequest || !serviceIssueRequest.rawData || !serviceIssueRequest.accountId || !serviceIssueRequest.storeName )  {
+    res.status(400);
+    res.send('Parameter is not correct.');
+    res.end();
+    return;
+  }
 
-  res.end(deployDocumentJson);
+  var serviceResponse = await tradeTrustService.issueDocument( serviceIssueRequest );
+
+  log( `serviceResponse.status:    ${serviceResponse.status}`);
+
+  if( serviceResponse.status !=  Status.SUCCESS ) {
+    res.status( 503 );
+    res.send( serviceResponse.msg );
+    return;
+  }
+  log( `serviceResponse.details:    ${serviceResponse.details}`);
+
+  res.end( serviceResponse.details );
 });
 
 app.post("/publish", function (req: any, res: any) {

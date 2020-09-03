@@ -1,5 +1,6 @@
 
 import TradeTrustService from "../../src/service/TradeTrustService";
+import TTRepositoryService from "../../src/service/TTRepositoryService";
 
 
 import {
@@ -21,10 +22,8 @@ import {
     DocumentDetails,
   } from "../../src/share/share";
 
-var walletRequest: WalletRequest = { accountId:"accn6", password:"pwd1"};
-
-var tradeTrustService = new TradeTrustService();
-var ServiceResponse = tradeTrustService.createWallet( walletRequest );
+var repositoryService = new TTRepositoryService();
+var ServiceResponse = repositoryService.getWallet("accn6");
 
 ServiceResponse.then( function( serviceResponse:ServiceResponse ) {
 

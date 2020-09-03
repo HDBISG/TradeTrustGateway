@@ -7,8 +7,10 @@ import {
   DocumentDetails,
 } from "../share/share";
 
+const util = require('util');
+
 export default class TTRepositoryService {
-  private mysql: any = require("mysql");
+  private mysql: any = require("mysql2/promise");
   private pool: any;
 
   constructor() {
@@ -97,29 +99,40 @@ export default class TTRepositoryService {
       if (!accnId) throw new Error("param accnId null");
 
       let selectQuery: string = "SELECT * FROM ?? WHERE ?? = ?";
-      let query: string = this.mysql.format(selectQuery, [
+      let sql: string = this.mysql.format(selectQuery, [
         "T_TTGW_WALLET",
         "WALLET_ACCN_ID",
         accnId,
       ]);
-      this.pool.query(query, (err: any, data: any) => {
-        if (err) {
-          svcResponse.status = Status.ERROR;
-          svcResponse.msg = err.message;
-        } else {
-          svcResponse.status = Status.SUCCESS;
-          let wallets = data.map((item: any) => {
-            let walletDetails: WalletDetails = {
-              accountId: item.WALLET_ACCN_ID,
-              password: item.WALLET_PASSWORD,
-              address: item.WALLET_ADDR,
-              jsonEncrpyted: item.WALLET_JSON,
-            };
-          });
-          svcResponse.details = wallets;
-        }
-      });
+
+/*
+      let selectQuery: string = "SELECT * FROM ?? ";
+      let sql: string = this.mysql.format(selectQuery, [
+        "T_TTGW_WALLET"
+      ]);
+*/
+      log( `query: ${sql} ` );
+      const data = await this.pool.query(sql);
+
+      var wallets:WalletDetails[] = new Array(data[0].length);
+
+      var idx = 0;
+      for ( const i in data[0] ) {
+        let walletDetails: WalletDetails = {
+          accountId: data[0][i].WALLET_ACCN_ID,
+          password: data[0][i].WALLET_PASSWORD,
+          address: data[0][i].WALLET_ADDR,
+          jsonEncrpyted: data[0][i].WALLET_JSON,
+        };
+        wallets[idx] = walletDetails ;
+        idx++;
+      }
+
+      svcResponse.details = wallets;
+      svcResponse.status = Status.SUCCESS;
+
     } catch (error) {
+      console.log(error.stack);
       svcResponse.status = Status.ERROR;
       svcResponse.msg = error.message;
     }
@@ -155,7 +168,7 @@ export default class TTRepositoryService {
 
       let dtNow: string = TTRepositoryService.getNow();
       let insertQuery: string =
-        "INSERT INTO ?? (??,??,??,??,??,??,??,??,??) VALUES ??,??,??,??,??,??,??,??,??)";
+        "INSERT INTO ?? (??,??,??, ??,??,??, ??,??,??) VALUES ?,?,? ,?,?,?, ?,?,?)";
       let query: any = this.mysql.format(insertQuery, [
         "T_TTGW_DOCSTORE",
         "DOCSTORE_ACCN_ID", // primary key

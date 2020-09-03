@@ -70,6 +70,11 @@ export declare type ServiceDeployRequest = {
   network: string;
 };
 
+export declare type WrapRequest = {
+  accountId: string; 
+  wrapJson: string; 
+};
+
 // Wrap Document Reponse
 export declare type WrapResponse = {
   status: Status;
