@@ -62,21 +62,12 @@ export default class TTRepositoryService {
       ]);
 
      //  log(  this.pool);
+      console.log(sql);
 
-      var query = this.pool.query(sql, (err: any, response: any) => {
-        if (err) {
-          svcResponse.status = Status.ERROR;
-          svcResponse.msg = err.message;
-        } else {
-          svcResponse.status = Status.SUCCESS;
-          svcResponse.details = response.insertId;
-        }
+      var query = await this.pool.query(sql);
 
-        log( `err: ${err}`);
-        log( `response: ${response}`);
+      svcResponse.status = Status.SUCCESS;
 
-      });
-      console.log(query.sql);
 
     } catch (error) {
       svcResponse.status = Status.ERROR;
