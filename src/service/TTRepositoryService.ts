@@ -215,30 +215,34 @@ export default class TTRepositoryService {
       if (!docStoreName) throw new Error("param docStoreName null");
 
       let selectQuery: string = "SELECT * FROM ?? WHERE ?? = ? and ?? = ?";
-      let query: string = this.mysql.format(selectQuery, [
+      let sql: string = this.mysql.format(selectQuery, [
         "T_TTGW_DOCSTORE",
         "DOCSTORE_ACCN_ID",
         accnId,
         "DOCSTORE_NAME",
         docStoreName,
       ]);
-      this.pool.query(query, (err: any, data: any) => {
-        if (err) {
-          svcResponse.status = Status.ERROR;
-          svcResponse.msg = err.message;
-        } else {
-          svcResponse.status = Status.SUCCESS;
-          let docStoreDetails = data.map((item: any) => {
-            let docStoreDetal: DocumentStoreDetails = {
-              accountId: item.DOCSTORE_ACCN_ID,
-              storeName: item.DOCSTORE_NAME,
-              address: item.DOCSTORE_ADDR,
-              network: item.DOCSTORE_NETWORK,
-            };
-          });
-          svcResponse.details = docStoreDetails;
-        }
-      });
+      
+      log( `query: ${sql} ` );
+      const data = await this.pool.query(sql);
+
+      var documentStores:DocumentStoreDetails[] = new Array(data[0].length);
+
+      var idx = 0;
+      for ( const i in data[0] ) {
+        let documentStoreDetails: DocumentStoreDetails = {
+          accountId: data[0][i].DOCSTORE_ACCN_ID,
+          storeName: data[0][i].DOCSTORE_NAME,
+          address: data[0][i].DOCSTORE_ADDR,
+          network: data[0][i].DOCSTORE_NETWORK
+        };
+        documentStores[idx] = documentStoreDetails ;
+        idx++;
+      }
+
+      svcResponse.details = documentStores;
+      svcResponse.status = Status.SUCCESS;
+
     } catch (error) {
       svcResponse.status = Status.ERROR;
       svcResponse.msg = error.message;
@@ -275,8 +279,8 @@ export default class TTRepositoryService {
       const uuid = require("uuid");
       let dtNow: string = TTRepositoryService.getNow();
       let insertQuery: string =
-        "INSERT INTO ?? (??,??,??,??,??,??,??,??,??,??,??,??) VALUES ??,??,??,??,??,??,??,??,??,??,??,??)";
-      let query: any = this.mysql.format(insertQuery, [
+        "INSERT INTO ?? (??,??,??, ??,??,??, ??,??,??, ??,??,??) VALUES (?,?,?, ?,?,?, ?,?,?, ?,?,?)";
+      let sql: any = this.mysql.format(insertQuery, [
         "T_TTGW_DOC",
         "DOC_DOC_ID", // Primary key
         "DOC_ACCN_ID",
@@ -286,10 +290,10 @@ export default class TTRepositoryService {
         "DOC_WRAP_DOC",
         "DOC_WRAP_RAW_DOC",
         "DOC_STATUS",
-        "DOCSTORE_UID_CREATE",
-        "DOCSTORE_DT_CREATE",
-        "DOCSTORE_UID_UPD",
-        "DOCSTORE_DT_UPD",
+        "DOC_UID_CREATE",
+        "DOC_DT_CREATE",
+        "DOC_UID_UPD",
+        "DOC_DT_UPD",
         uuid(),
         documentDetails.accountId,
         documentDetails.storeName,
@@ -303,15 +307,18 @@ export default class TTRepositoryService {
         "SYS",
         dtNow,
       ]);
-      this.pool.query(query, (err: any, response: any) => {
-        if (err) {
-          svcResponse.status = Status.ERROR;
-          svcResponse.msg = err.message;
-        } else {
-          svcResponse.status = Status.SUCCESS;
-          svcResponse.details = response.insertId;
-        }
-      });
+
+      console.log("---------------------------");
+      console.log(documentDetails.wrappedDocument);
+      console.log(documentDetails.rawDocument);
+      console.log("+++++++++++++++++++++++++++++++++");
+     //  log(  this.pool);
+     console.log(sql);
+
+     var query = await this.pool.query(sql);
+
+     svcResponse.status = Status.SUCCESS;
+
     } catch (error) {
       svcResponse.status = Status.ERROR;
       svcResponse.msg = error.message;

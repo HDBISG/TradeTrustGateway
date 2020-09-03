@@ -59,6 +59,7 @@ export default async function issueDocument(
     issueResponse.status = Status.SUCCESS;
     issueResponse.details = contractAddress;
   } catch (error) {
+    log(error.stack);
     issueResponse.status = Status.ERROR;
     issueResponse.msg = error.message;
   }

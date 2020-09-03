@@ -158,7 +158,7 @@ export default class TradeTrustService {
       }
 
       svcResponse.status = Status.SUCCESS;
-      svcResponse.details = JSON.stringify( documentStoreDetails ); // returns the record id
+      svcResponse.details = JSON.stringify( documentStoreDetails ); // 
     } catch (error) {
       svcResponse.status = Status.ERROR;
       svcResponse.msg = error.message;
@@ -187,12 +187,16 @@ export default class TradeTrustService {
         throw new Error("param svcIssueRequest.storeName null");
 
       // wrap the raw data into a wrap document
-      var wrapper = require("../src/implementations/wrapperComponent").default;
+      var wrapper = require("../components/wrappDocument").default;
       var wrapDocument = new wrapper();
-      const wrappedDocumentJson = wrapDocument.wrapFileJson(
+      const wrappedDocumentJson = wrapDocument.wrap(
         svcIssueRequest.rawData
       );
       if (!wrappedDocumentJson) throw new Error("wrappedDocumentJson null");
+      const wrappDocument = JSON.parse(wrappedDocumentJson.details);
+      var merkleRoot = wrappDocument.signature.merkleRoot;
+
+      log(`<issueDocument> merkleRoot: ${merkleRoot}`);
 
       // Get the walletDetails from T_TTGW_WALLET for the wallet associated with the accountId
       var walletDetails: WalletDetails = await this.getWalletDetails(
@@ -207,9 +211,9 @@ export default class TradeTrustService {
       );
       if (!docStoreDetails) throw new Error("docStoreDetails null");
 
-      var wrappedHash = "wrappedDocumentJson.hash"; // **** WHAT IS THIS HASH VALUE
+      //var wrappedHash = sssssss  // "wrappedDocumentJson.hash"; // **** WHAT IS THIS HASH VALUE
       var issueRequest: IssueRequest = {
-        wrappedHash: wrappedHash,
+        wrappedHash: "0x"+merkleRoot,
         network: docStoreDetails.network,
         wallet: walletDetails,
         documentStore: docStoreDetails,
@@ -223,10 +227,10 @@ export default class TradeTrustService {
       var docDetails: DocumentDetails = {
         accountId: svcIssueRequest.accountId,
         storeName: svcIssueRequest.storeName,
-        wrappedHash: wrappedHash,
-        address: issueResponse.details,
-        wrappedDocument: wrappedDocumentJson,
-        rawDocument: svcIssueRequest.rawData,
+        wrappedHash: merkleRoot,
+        address: docStoreDetails.address,
+        wrappedDocument: JSON.stringify(wrappDocument),
+        rawDocument: JSON.stringify(svcIssueRequest.rawData),
       };
 
       // Insert wallet into T_TTGW_DOCSTORE
@@ -240,6 +244,7 @@ export default class TradeTrustService {
       svcResponse.status = Status.SUCCESS;
       svcResponse.details = repoSvcResponse.details; // returns the record id
     } catch (error) {
+      log(error.stack);
       svcResponse.status = Status.ERROR;
       svcResponse.msg = error.message;
     }
