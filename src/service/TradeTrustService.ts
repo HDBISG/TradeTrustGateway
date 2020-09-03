@@ -81,7 +81,8 @@ export default class TradeTrustService {
       var walletDetails: WalletDetails = await this.getWalletDetails(
         topUpRequest.accountId
       );
-      if (!walletDetails) throw new Error("wallDetails null");
+      if (!walletDetails) throw new Error("Fail to find wallet via " + topUpRequest.accountId );
+      
       log(`<topupWallet> walletDetails: ${JSON.stringify(walletDetails)}`);
 
       // Invoke the top via the component
