@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run check-types && cross-env NODE_ENV=production webpack --progress --mode production"
   },
   "author": "",
   "license": "ISC",
@@ -45,7 +46,8 @@
     "sync-sql": "^1.0.2",
     "tmp": "^0.2.1",
     "ts-node": "^8.10.2",
-    "typescript": "^3.9.6"
+    "typescript": "^3.9.6",
+    "webpack": "^4.44.1"
   },
   "dependencies": {
     "@govtechsg/dnsprove": "^2.0.6",
