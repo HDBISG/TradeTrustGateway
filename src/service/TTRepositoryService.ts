@@ -15,12 +15,15 @@ export default class TTRepositoryService {
 
   constructor() {
     log("TTRepositoryService");
+
+    const configFile = this.getConfigFile();
+
     this.pool = this.mysql.createPool({
       connectionLimit: 20, //important
-      host: 'localhost',
-      user: 'root',
-      password: 'root',
-      database: 'tradetrust',
+      host: configFile.host,
+      user: configFile.user,
+      password: configFile.password,
+      database: configFile.database,
       debug: false,
     });
   }
@@ -352,5 +355,13 @@ export default class TTRepositoryService {
       details: "",
     };
     return svcResponse;
+  }
+
+  private getConfigFile() {
+    var fs = require("fs");
+    const ttConfigJSONfile:string = fs.readFileSync('/home/vcc/tt/TradeTrust.json', 'utf8');
+    log(`ttConfigJSONfile= ${ttConfigJSONfile}`);
+    const ttConfigFile = JSON.parse( ttConfigJSONfile );
+    return ttConfigFile;
   }
 }
