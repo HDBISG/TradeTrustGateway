@@ -73,6 +73,7 @@ export default class TTRepositoryService {
 
 
     } catch (error) {
+      log(error.stack);
       svcResponse.status = Status.ERROR;
       svcResponse.msg = error.message;
     }
