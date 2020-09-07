@@ -147,6 +147,10 @@ export default class TradeTrustService {
         deployReqeust
       );
       if (!deployResponse) throw new Error("deployResponse null");
+      if (deployResponse.status != Status.SUCCESS) {
+        throw new Error(`repoSvc: ${deployResponse.msg}`);
+      }
+
       var documentStoreDetails: DocumentStoreDetails = deployResponse.docStore;
 
       // Insert wallet into T_TTGW_DOCSTORE
@@ -160,6 +164,7 @@ export default class TradeTrustService {
       svcResponse.status = Status.SUCCESS;
       svcResponse.details = JSON.stringify( documentStoreDetails ); // 
     } catch (error) {
+      log( error.stack );
       svcResponse.status = Status.ERROR;
       svcResponse.msg = error.message;
     }
