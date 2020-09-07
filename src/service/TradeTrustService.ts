@@ -162,7 +162,7 @@ export default class TradeTrustService {
       }
 
       svcResponse.status = Status.SUCCESS;
-      svcResponse.details = JSON.stringify( documentStoreDetails ); // 
+      svcResponse.details = documentStoreDetails ; // 
     } catch (error) {
       log( error.stack );
       svcResponse.status = Status.ERROR;
