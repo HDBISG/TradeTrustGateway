@@ -163,16 +163,17 @@ app.post("/publish", function (req: any, res: any) {
   res.end(JSON.stringify(wrappedDocument));
 });
 
-app.listen(80, function ( req: Request, res: Response ) {
+app.all('*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+  res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+  res.header("X-Powered-By",' 3.2.1')
+  // if(req.method=="OPTIONS") res.send(200);
+  // else  next();
+});
 
-    app.all('*', function(req, res, next) {
-      res.header("Access-Control-Allow-Origin", "*");
-      res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
-      res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
-      res.header("X-Powered-By",' 3.2.1')
-      // if(req.method=="OPTIONS") res.send(200);
-      // else  next();
-  });
+
+app.listen(80, function ( req: Request, res: Response ) {
 
   console.log("Example app listening at 80");
 });
