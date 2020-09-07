@@ -108,16 +108,16 @@ app.post("/deployDocStore", async function (req: Request, res: Response) {
 
   var serviceResponse = await tradeTrustService.deployDocumentStore( serviceDeployRequest );
 
-  log( `serviceResponse.status:    ${serviceResponse.status}`);
-
+  log( `serviceResponse.status:  ${JSON.stringify(serviceResponse)}`);
+/*
   if( serviceResponse.status !=  Status.SUCCESS ) {
     res.status( 503 );
     res.send( serviceResponse.msg );
     return;
   }
   log( `serviceResponse.details:    ${serviceResponse.details}`);
-
-  res.end( serviceResponse.details );
+*/
+res.end( JSON.stringify(serviceResponse) );
 });
 
 
