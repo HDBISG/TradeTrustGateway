@@ -42,7 +42,7 @@ export default async function deployDocumentStore(
     const transaction = await factory.deploy(deployRequest.docStoreName, {
       gasPrice: gasPrice.mul(gasPriceScale),
     });
-    log(`details: ${JSON.stringify(transaction.deployTransaction)}`);
+    log(`details: ${JSON.stringify(transaction.deployTransaction.hash)}`);
 
     const details: { hash: string; blockNumber: string } =
       transaction.deployTransaction;
