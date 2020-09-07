@@ -134,16 +134,9 @@ app.post("/issue", async function (req: Request, res: Response) {
 
   var serviceResponse = await tradeTrustService.issueDocument( serviceIssueRequest );
 
-  log( `serviceResponse.status:    ${serviceResponse.status}`);
+  log( `serviceResponse.status:  ${JSON.stringify(serviceResponse)}`);
 
-  if( serviceResponse.status !=  Status.SUCCESS ) {
-    res.status( 503 );
-    res.send( serviceResponse.msg );
-    return;
-  }
-  log( `serviceResponse.details:    ${serviceResponse.details}`);
-
-  res.end( serviceResponse.details );
+  res.end( JSON.stringify(serviceResponse) );
 });
 
 app.post("/publish", function (req: any, res: any) {

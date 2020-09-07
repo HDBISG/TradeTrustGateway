@@ -250,7 +250,7 @@ export default class TradeTrustService {
       }
 
       svcResponse.status = Status.SUCCESS;
-      svcResponse.details = repoSvcResponse.details; // returns the record id
+      svcResponse.details = wrappedDocumentJson;
     } catch (error) {
       log(error.stack);
       svcResponse.status = Status.ERROR;
