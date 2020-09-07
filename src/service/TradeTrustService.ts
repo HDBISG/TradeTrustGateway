@@ -224,6 +224,9 @@ export default class TradeTrustService {
       if (!issueResponse) throw new Error("issueResponse null");
       log(`<issueDocument> issueResponse: ${JSON.stringify(issueResponse)}`);
 
+      if (issueResponse.status != Status.SUCCESS) {
+        throw new Error(`repoSvc: ${issueResponse.msg}`);
+      }
       var docDetails: DocumentDetails = {
         accountId: svcIssueRequest.accountId,
         storeName: svcIssueRequest.storeName,

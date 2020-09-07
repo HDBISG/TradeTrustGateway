@@ -163,6 +163,6 @@ app.post("/publish", function (req: any, res: any) {
   res.end(JSON.stringify(wrappedDocument));
 });
 
-app.listen(8080, function ( req: Request, res: Response ) {
-  console.log("Example app listening at 8081");
+app.listen(80, function ( req: Request, res: Response ) {
+  console.log("Example app listening at 80");
 });
