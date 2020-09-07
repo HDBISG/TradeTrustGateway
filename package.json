@@ -57,6 +57,7 @@
     "@govtechsg/open-attestation": "^3.9.0",
     "@govtechsg/token-registry": "^2.0.0",
     "ajv": "^6.12.3",
+    "cors": "^2.8.5",
     "debug": "^4.1.1",
     "ethers": "^5.0.8",
     "inquirer": "^7.3.0",
