@@ -79,7 +79,7 @@ app.post("/topUp", async function (req: Request, res: Response) {
 
   var serviceResponse = await tradeTrustService.topupWallet( topUpRequest );
 
-  log( `serviceResponse.status:    ${serviceResponse}`);
+  log( `serviceResponse.status:    ${ JSON.stringify(serviceResponse) }`);
 /*
   if( serviceResponse.status !=  Status.SUCCESS ) {
     res.status( 503 );
@@ -90,7 +90,7 @@ app.post("/topUp", async function (req: Request, res: Response) {
 
 */
 
-  res.end( serviceResponse );
+  res.end( JSON.stringify(serviceResponse) );
 
 });
 
