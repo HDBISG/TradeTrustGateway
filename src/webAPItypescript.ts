@@ -88,7 +88,7 @@ app.post("/topUp", async function (req: Request, res: Response) {
   }
   log( `serviceResponse.details:    ${serviceResponse.details}`);
 
-  res.end( serviceResponse.details );
+  res.end( serviceResponse );
 
 });
 
