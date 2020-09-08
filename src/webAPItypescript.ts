@@ -55,14 +55,7 @@ app.post("/createWallet", async function (req: Request, res: Response) {
 
   log( `serviceResponse.status:    ${serviceResponse.status}`);
 
-  if( serviceResponse.status !=  Status.SUCCESS ) {
-    res.status( 503 );
-    res.send( serviceResponse.msg );
-    return;
-  }
-  log( `serviceResponse.details:    ${serviceResponse.details}`);
-
-  res.end( JSON.stringify( serviceResponse.details) );
+  res.end( JSON.stringify(serviceResponse) );
 });
 
 
@@ -80,15 +73,6 @@ app.post("/topUp", async function (req: Request, res: Response) {
   var serviceResponse = await tradeTrustService.topupWallet( topUpRequest );
 
   log( `serviceResponse.status:    ${ JSON.stringify(serviceResponse) }`);
-/*
-  if( serviceResponse.status !=  Status.SUCCESS ) {
-    res.status( 503 );
-    res.send( serviceResponse.msg );
-    return;
-  }
-  log( `serviceResponse.details:    ${serviceResponse.details}`);
-
-*/
 
   res.end( JSON.stringify(serviceResponse) );
 

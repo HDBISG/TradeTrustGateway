@@ -3,9 +3,9 @@ import { ethers, getDefaultProvider, Wallet, providers } from "ethers";
 import { progress as defaultProgress } from "./progress";
 
 export enum Status {
-  SUCCESS,
-  FAIL,
-  ERROR,
+  SUCCESS = 1,
+  FAIL = -1,
+  ERROR = -2,
 }
 
 export function log(msg: string) {
