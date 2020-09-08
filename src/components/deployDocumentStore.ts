@@ -64,14 +64,14 @@ export default async function deployDocumentStore(
       address: documentStore.contractAddress,
       network: deployRequest.network,
 
-      renderName: deployRequest.renderName,
-      renderType: deployRequest.renderType,
-      renderUrl: deployRequest.renderUrl,
-      name: deployRequest.name,
+      renderName: "",
+      renderType: "",
+      renderUrl: "",
+      name: "",
 
-      issuerName: deployRequest.issuerName,
-      issuerType: deployRequest.issuerType,
-      issuerLocation: deployRequest.issuerLocation,
+      issuerName: "",
+      issuerType: "",
+      issuerLocation: "",
       remark: "",
 
     };

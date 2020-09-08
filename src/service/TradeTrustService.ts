@@ -141,14 +141,7 @@ export default class TradeTrustService {
         accountId: svcDeployRequest.accountId,
         docStoreName: svcDeployRequest.docStoreName,
         network: svcDeployRequest.network,
-        wallet: walletDetails,
-        renderName: svcDeployRequest.issuerName, 
-        renderType: "",
-        renderUrl: svcDeployRequest.renderUrl, 
-        name:"",
-        issuerName: svcDeployRequest.issuerName, 
-        issuerType: "",
-        issuerLocation: svcDeployRequest.issuerLocation
+        wallet: walletDetails
       };
       var deployResponse: DeployResponse = await deployDocumentStore(
         deployReqeust

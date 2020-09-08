@@ -47,13 +47,6 @@ export declare type DeployRequest = {
   accountId: string; // accountId used to link to wallet in database (acount:docStoreName = 1:N)
   docStoreName: string; // document store name
   network: string; // network to deploy to
-  renderName: string;
-  renderType: string;
-  renderUrl:string;
-  name:string;
-  issuerName:string;
-  issuerType:string;
-  issuerLocation:string;
   wallet: WalletDetails; // details of the wallet
 };
 
