@@ -142,6 +142,13 @@ export default class TradeTrustService {
         docStoreName: svcDeployRequest.docStoreName,
         network: svcDeployRequest.network,
         wallet: walletDetails,
+        renderName: svcDeployRequest.issuerName, 
+        renderType: "",
+        renderUrl: svcDeployRequest.renderUrl, 
+        name:"",
+        issuerName: svcDeployRequest.issuerName, 
+        issuerType: "",
+        issuerLocation: svcDeployRequest.issuerLocation
       };
       var deployResponse: DeployResponse = await deployDocumentStore(
         deployReqeust
@@ -152,6 +159,14 @@ export default class TradeTrustService {
       }
 
       var documentStoreDetails: DocumentStoreDetails = deployResponse.docStore;
+
+      documentStoreDetails.renderName= svcDeployRequest.issuerName; 
+      documentStoreDetails.renderType= "EMBEDDED_RENDERER";
+      documentStoreDetails.renderUrl= svcDeployRequest.renderUrl; 
+      documentStoreDetails.name= "smart eCO";
+      documentStoreDetails.issuerName= svcDeployRequest.issuerName; 
+      documentStoreDetails.issuerType= "DNS-TXT";
+      documentStoreDetails.issuerLocation= svcDeployRequest.issuerLocation;
 
       // Insert wallet into T_TTGW_DOCSTORE
       var repoSvcResponse: ServiceResponse = await this.repoService.insertDocumentStore(

@@ -163,22 +163,45 @@ export default class TTRepositoryService {
 
       let dtNow: string = TTRepositoryService.getNow();
       let insertQuery: string =
-        "INSERT INTO ?? (??,??,??, ??,??,??, ??,??,??) VALUES ( ?,?,? ,?,?,?, ?,?,?)";
+        "INSERT INTO ?? (??,??,??,??, ??,??,??,??, ??,??,??,??,  ??,??,??,??,??) VALUES ( ?,?,?,?, ?,?,?,?, ?,?,?,?, ?,?,?,?,? )";
       let sql: any = this.mysql.format(insertQuery, [
         "T_TTGW_DOCSTORE",
         "DOCSTORE_ACCN_ID", // primary key
-        "DOCSTORE_NAME", // primary key
+        "DOCSTORE_STORE_NAME", // primary key
         "DOCSTORE_ADDR",
         "DOCSTORE_NETWORK",
+        
+        "DOCSTORE_RENDER_NAME",
+        "DOCSTORE_RENDER_TYPE",
+        "DOCSTORE_RENDER_URL",
+        "DOCSTORE_NAME",
+
+        "DOCSTORE_ISSUER_NAME",
+        "DOCSTORE_ISSUER_TYPE",
+        "DOCSTORE_ISSUER_LOCATION",
+        "DOCSTORE_REMARK",
+
         "DOCSTORE_STATUS",
         "DOCSTORE_UID_CREATE",
         "DOCSTORE_DT_CREATE",
         "DOCSTORE_UID_UPD",
         "DOCSTORE_DT_UPD",
+
         documentStoreDetails.accountId,
         documentStoreDetails.storeName,
         documentStoreDetails.address,
         documentStoreDetails.network,
+
+        documentStoreDetails.renderName,
+        documentStoreDetails.renderType,
+        documentStoreDetails.renderUrl,
+        documentStoreDetails.name,
+
+        documentStoreDetails.issuerName,
+        documentStoreDetails.issuerType,
+        documentStoreDetails.issuerLocation,
+        documentStoreDetails.remark,
+
         "A",
         "SYS",
         dtNow,

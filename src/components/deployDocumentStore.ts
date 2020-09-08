@@ -20,7 +20,9 @@ export default async function deployDocumentStore(
   var deployResponse: DeployResponse = {
     status: Status.FAIL,
     msg: "",
-    docStore: { accountId: "", storeName: "", address: "", network: "" },
+    docStore: { accountId: "", storeName: "", address: "", network: "",
+      renderName: "", renderType: "", renderUrl: "", name: "",
+      issuerName: "", issuerType: "", issuerLocation: "", remark: "", },
   };
   try {
     if (!deployRequest) throw new Error("param deployReq null");
@@ -53,11 +55,25 @@ export default async function deployDocumentStore(
     if (!documentStore) throw new Error("documentStore null");
 
     deployResponse.status = Status.SUCCESS;
+
+
     deployResponse.docStore = {
+
       accountId: deployRequest.accountId,
       storeName: deployRequest.docStoreName,
       address: documentStore.contractAddress,
       network: deployRequest.network,
+
+      renderName: deployRequest.renderName,
+      renderType: deployRequest.renderType,
+      renderUrl: deployRequest.renderUrl,
+      name: deployRequest.name,
+
+      issuerName: deployRequest.issuerName,
+      issuerType: deployRequest.issuerType,
+      issuerLocation: deployRequest.issuerLocation,
+      remark: "",
+
     };
   } catch (error) {
     console.log(error.stack);
