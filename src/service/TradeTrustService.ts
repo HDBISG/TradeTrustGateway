@@ -52,10 +52,12 @@ export default class TradeTrustService {
         throw new Error(`repoSvc: ${repoSvcResponse.msg}`);
       }
       svcResponse.status = Status.SUCCESS;
-      svcResponse.details = walletResponse.details; // returns the record id
+      svcResponse.msg = "SUCCESS";
+      svcResponse.details = walletResponse.details; // 
     } catch (error) {
       svcResponse.status = Status.ERROR;
-      svcResponse.msg = error.message;
+      svcResponse.msg = "ERROR";
+      svcResponse.details = error.message;
     }
 
     log(`<createwallet> svcResponse: ${JSON.stringify(svcResponse)}`);
@@ -94,10 +96,12 @@ export default class TradeTrustService {
         throw new Error(`repoSvc: ${topUpResponse.msg}`);
 
       svcResponse.status = Status.SUCCESS;
+      svcResponse.msg = "SUCCESS";
       svcResponse.details = "SUCCESS";
     } catch (error) {
       svcResponse.status = Status.ERROR;
-      svcResponse.msg = error.message;
+      svcResponse.msg = "ERROR";
+      svcResponse.details = error.message;
     }
     log(`svcResponse: ${JSON.stringify(svcResponse)}`);
     return svcResponse;
@@ -170,11 +174,13 @@ export default class TradeTrustService {
       }
 
       svcResponse.status = Status.SUCCESS;
+      svcResponse.msg = "SUCCESS";
       svcResponse.details = documentStoreDetails ; // 
     } catch (error) {
       log( error.stack );
       svcResponse.status = Status.ERROR;
-      svcResponse.msg = error.message;
+      svcResponse.msg = "ERROR";
+      svcResponse.details = error.message;
     }
     log(`svcResponse: ${JSON.stringify(svcResponse)}`);
     return svcResponse;
@@ -258,11 +264,13 @@ export default class TradeTrustService {
       }
 
       svcResponse.status = Status.SUCCESS;
+      svcResponse.msg = "SUCCESS";
       svcResponse.details = wrappedDocumentJson;
     } catch (error) {
       log(error.stack);
       svcResponse.status = Status.ERROR;
-      svcResponse.msg = error.message;
+      svcResponse.msg = "ERROR";
+      svcResponse.details = error.message;
     }
     log(`svcResponse: ${JSON.stringify(svcResponse)}`);
     return svcResponse;
