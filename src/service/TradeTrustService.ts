@@ -205,14 +205,22 @@ export default class TradeTrustService {
       if (!svcIssueRequest.storeName)
         throw new Error("param svcIssueRequest.storeName null");
 
+      // Get the document store details from T_TTGW_DOCSTORE assoicated with accountId and storeName
+      var docStoreDetails: DocumentStoreDetails = await this.getStoreDetails(
+        svcIssueRequest.accountId,
+        svcIssueRequest.storeName
+      );
+      if (!docStoreDetails) throw new Error("docStoreDetails null");
+      //
+      var rawDataWithTempalteIssue = this.prepareRawDataWithTempalteIssue( svcIssueRequest.rawData, docStoreDetails );
+
       // wrap the raw data into a wrap document
       var wrapper = require("../components/wrappDocument").default;
       var wrapDocument = new wrapper();
-      const wrappedDocumentJson = wrapDocument.wrap(
-        svcIssueRequest.rawData
-      );
+      const wrappedDocumentJson = wrapDocument.wrap( rawDataWithTempalteIssue );
       if (!wrappedDocumentJson) throw new Error("wrappedDocumentJson null");
-      const wrappDocument = JSON.parse(wrappedDocumentJson.details);
+      log(`---wrapp data: ${JSON.stringify( wrappedDocumentJson ) }`);
+      const wrappDocument = wrappedDocumentJson.details;
       var merkleRoot = wrappDocument.signature.merkleRoot;
 
       log(`<issueDocument> merkleRoot: ${merkleRoot}`);
@@ -223,12 +231,6 @@ export default class TradeTrustService {
       );
       if (!walletDetails) throw new Error("walletDetails null");
 
-      // Get the document store details from T_TTGW_DOCSTORE assoicated with accountId and storeName
-      var docStoreDetails: DocumentStoreDetails = await this.getStoreDetails(
-        svcIssueRequest.accountId,
-        svcIssueRequest.storeName
-      );
-      if (!docStoreDetails) throw new Error("docStoreDetails null");
 
       //var wrappedHash = sssssss  // "wrappedDocumentJson.hash"; // **** WHAT IS THIS HASH VALUE
       var issueRequest: IssueRequest = {
@@ -345,5 +347,23 @@ export default class TradeTrustService {
       details: "",
     };
     return svcResponse;
+  }
+
+  private prepareRawDataWithTempalteIssue( renderBody:any, docStoreDetails: DocumentStoreDetails ) : any {
+    var wrappData = {"$template":{},"name":"","data":renderBody,"issuers":{} };
+    //wrappData.$template =  {};
+
+    var template = { "name":docStoreDetails.renderName, "type":docStoreDetails.renderType, "url":docStoreDetails.renderUrl };
+    wrappData.$template = template;
+    wrappData.name = docStoreDetails.name;
+
+    var issuers = [{"name":docStoreDetails.issuerName , "documentStore":docStoreDetails.address
+      , "identityProof":{ "type":docStoreDetails.issuerType, "location":docStoreDetails.issuerLocation } }];
+
+    wrappData.issuers = issuers;
+
+    log(`---row data: ${JSON.stringify(wrappData) }`);
+    // return object;
+    return wrappData;
   }
 }

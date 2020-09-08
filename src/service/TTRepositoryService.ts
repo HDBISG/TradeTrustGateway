@@ -246,7 +246,7 @@ export default class TTRepositoryService {
         "T_TTGW_DOCSTORE",
         "DOCSTORE_ACCN_ID",
         accnId,
-        "DOCSTORE_NAME",
+        "DOCSTORE_STORE_NAME",
         docStoreName,
       ]);
       

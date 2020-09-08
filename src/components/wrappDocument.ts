@@ -24,7 +24,7 @@ export default class WrapDocument {
       if (!wrappedDocument) throw new Error("wrappedDocument null");
 
       wrapResponse.status = Status.SUCCESS;
-      wrapResponse.details = JSON.stringify(wrappedDocument);
+      wrapResponse.details = wrappedDocument;
     } catch (error) {
       wrapResponse.status = Status.ERROR;
       wrapResponse.msg = error.message;
