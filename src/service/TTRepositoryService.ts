@@ -261,7 +261,15 @@ export default class TTRepositoryService {
           accountId: data[0][i].DOCSTORE_ACCN_ID,
           storeName: data[0][i].DOCSTORE_NAME,
           address: data[0][i].DOCSTORE_ADDR,
-          network: data[0][i].DOCSTORE_NETWORK
+          network: data[0][i].DOCSTORE_NETWORK,
+          renderName: data[0][i].DOCSTORE_RENDER_NAME, 
+          renderType:data[0][i].DOCSTORE_RENDER_TYPE, 
+          renderUrl: data[0][i].DOCSTORE_RENDER_URL, 
+          name: data[0][i].DOCSTORE_NAME, 
+          issuerName: data[0][i].DOCSTORE_ISSUER_NAME, 
+          issuerType: data[0][i].DOCSTORE_ISSUER_TYPE, 
+          issuerLocation: data[0][i].DOCSTORE_ISSUER_LOCATION, 
+          remark: data[0][i].DOCSTORE_REMARK, 
         };
         documentStores[idx] = documentStoreDetails ;
         idx++;

@@ -22,7 +22,7 @@ export default async function deployDocumentStore(
     msg: "",
     docStore: { accountId: "", storeName: "", address: "", network: "",
       renderName: "", renderType: "", renderUrl: "", name: "",
-      issuerName: "", issuerType: "", issuerLocation: "", remark: "", },
+      issuerName: "", issuerType: "", issuerLocation: "", remark: "" },
   };
   try {
     if (!deployRequest) throw new Error("param deployReq null");

@@ -309,6 +309,8 @@ export default class TradeTrustService {
       storeName: "",
       address: "",
       network: "",
+      renderName: "", renderType: "", renderUrl: "", name: "",
+      issuerName: "", issuerType: "", issuerLocation: "", remark: "",
     };
     try {
       if (!accountId) throw new Error("param accountId null");
