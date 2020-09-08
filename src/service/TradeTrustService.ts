@@ -153,7 +153,7 @@ export default class TradeTrustService {
 
       var documentStoreDetails: DocumentStoreDetails = deployResponse.docStore;
 
-      documentStoreDetails.renderName= svcDeployRequest.issuerName; 
+      documentStoreDetails.renderName= svcDeployRequest.renderName; 
       documentStoreDetails.renderType= "EMBEDDED_RENDERER";
       documentStoreDetails.renderUrl= svcDeployRequest.renderUrl; 
       documentStoreDetails.name= "smart eCO";
