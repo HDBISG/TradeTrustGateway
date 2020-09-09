@@ -5,6 +5,7 @@ import {
   log,
   Status,
   DocumentDetails,
+  AuditLog
 } from "../share/share";
 
 const util = require('util');
@@ -224,6 +225,80 @@ export default class TTRepositoryService {
     log(`<insertDocumentStore> svcResponse: ${JSON.stringify(svcResponse)}`);
     return svcResponse;
   }
+
+
+  /**
+   * Insert record into T_TTGW_DOCSTORE
+   * @param documentStoreDetails
+   */
+  public async insertAuditLog(
+    auditLog: AuditLog
+  ): Promise<ServiceResponse> {
+    log(
+      `<insertAuditLog> auditLog: ${JSON.stringify( auditLog )}`
+    );
+
+    var svcResponse: ServiceResponse = this.getDefaultServiceResponse();
+    try {
+      if (!auditLog)
+        throw new Error("param auditLog null");
+      if (!auditLog.accountId)
+        throw new Error("param auditLog.accountId null");
+
+      let dtNow: string = TTRepositoryService.getNow();
+      let insertQuery: string =
+        "INSERT INTO ?? (??,??,??,??,??, ??,??,??, ??,??,??,??,??) VALUES ( ?,?,?,?,?, ?,?,?, ?,?,?,?,? )";
+      let sql: any = this.mysql.format(insertQuery, [
+        "T_TTGW_AUDITLOG",
+        "AUDT_ID", // primary key
+        "AUDT_EVENT", // primary key
+        "AUDT_TIMESTAMP",
+        "AUDT_ACCNID",
+        "AUDT_STORE_NAME",
+
+        "AUDT_UID",
+        "AUDT_UNAME",
+        "AUDT_REMOTE_IP",
+
+        "AUDT_REQUET",
+        "AUDT_RSP_STATUS",
+        "AUDT_RSP_MESSAGE",
+        "AUDT_RSP_DETAILS",
+        "AUDT_REMARKS",
+
+        (new Date()).getTime(),
+        auditLog.event,
+        new Date(),
+        auditLog.accountId,
+        auditLog.storeName,
+
+        "sys",
+        "sys",
+        auditLog.remoteIp,
+        
+        JSON.stringify( auditLog.requestBody ),
+        auditLog.rspStatus,
+        auditLog.rspMessage,
+        JSON.stringify( auditLog.rspDetails ),
+        auditLog.remarks
+      ]);
+
+     //  log(  this.pool);
+     console.log(sql);
+
+     var query = await this.pool.query(sql);
+
+     svcResponse.status = Status.SUCCESS;
+
+    } catch (error) {
+      svcResponse.status = Status.ERROR;
+      svcResponse.msg = error.message;
+    }
+
+    log(`<insertAuditLog> svcResponse: ${JSON.stringify(svcResponse)}`);
+    return svcResponse;
+  }
+
 
   /**
    * Get the document store details asscoiated with <accnId> and <storeName>

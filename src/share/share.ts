@@ -131,6 +131,22 @@ export declare type DocumentDetails = {
   rawDocument: string; // raw document
 };
 
+export declare type AuditLog = {
+  id?: string; 
+  event:string;
+  timestamp?:Date;
+  accountId: string;
+  storeName: string;
+  userId?: string;
+  userName?:string;
+  remoteIp:string;
+  requestBody:string;
+  rspStatus:string;
+  rspMessage:string;
+  rspDetails:string;
+  remarks?:string;
+};
+
 // GetWallet
 export interface NetworkOption {
   network: string;

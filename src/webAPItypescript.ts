@@ -12,6 +12,7 @@ const util = require("util");
 var path = require("path");
 
 import TradeTrustService from "./service/TradeTrustService";
+import TTRepositoryService from "./service/TTRepositoryService";
 
 
 import {
@@ -31,6 +32,7 @@ import {
   IssueRequest,
   IssueResponse,
   DocumentDetails,
+  AuditLog,
 } from "../src/share/share";
 
 var app = express();
@@ -39,23 +41,27 @@ var cors = require('cors');
 app.use(cors());
 
 var tradeTrustService = new TradeTrustService();
+var ttRepositoryService = new TTRepositoryService();
 
 app.post("/createWallet", async function (req: Request, res: Response) {
 
   let walletRequest = req.body;
+  var auditLog:AuditLog = { event:req.path, accountId:walletRequest.accountId, storeName:""
+      , remoteIp:"", requestBody:walletRequest, rspStatus:"", rspMessage:"", rspDetails:"" };
+  
+  try {
+    var serviceResponse = await tradeTrustService.createWallet( walletRequest );
+    auditLog.rspStatus = serviceResponse.status.toString();
+    auditLog.rspMessage = serviceResponse.msg!;
+    auditLog.rspDetails = serviceResponse.details;
 
-  if ( !walletRequest || !walletRequest.accountId || !walletRequest.password )  {
-    res.status(400);
-    res.send('Parameter is not correct.');
-    res.end();
-    return;
+    log( `serviceResponse.status:    ${serviceResponse.status}`);
+
+    res.end( JSON.stringify(serviceResponse) );
+  } finally {
+    ttRepositoryService.insertAuditLog(auditLog);
   }
 
-  var serviceResponse = await tradeTrustService.createWallet( walletRequest );
-
-  log( `serviceResponse.status:    ${serviceResponse.status}`);
-
-  res.end( JSON.stringify(serviceResponse) );
 });
 
 
