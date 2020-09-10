@@ -9,9 +9,9 @@ import {
   } from "../../src/share/share";
 
 
-var deployRequest: DeployRequest = { accountId:"accn1", docStoreName:"MyTestStore", network:"ropsten"
+var deployRequest: DeployRequest = { accountId:"accn1", docStoreName:"MyTestStore1", network:"ropsten"
     , wallet:{ accountId:"accn1", password:"", address:"", jsonEncrpyted:""
-    , privateKey:"6e717130450d364860f18581434c763fe83a6abf26d348a8548c919b0becad896e717130450d364860f18581434c763fe83a6abf26d348a8548c919b0becad89" } };
+    , privateKey:"6e717130450d364860f18581434c763fe83a6abf26d348a8548c919b0becad89" } };
 
 
 log(JSON.stringify( deployRequest) ) ;

@@ -35,6 +35,7 @@ export default async function issueDocument(
       encryptedWalletJson: issueRequest.wallet.jsonEncrpyted,
       password: issueRequest.wallet.password,
       network: issueRequest.network,
+      key:issueRequest.wallet.privateKey
     });
     if (!wallet) throw new Error("wallet null");
 

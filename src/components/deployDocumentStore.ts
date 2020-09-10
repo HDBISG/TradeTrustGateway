@@ -41,7 +41,9 @@ export default async function deployDocumentStore(
     var gasPriceScale = 1;
     const gasPrice = await wallet.provider.getGasPrice();
     const factory = new DocumentStoreFactory(wallet);
-    signale.await(`Sending transaction to pool ${deployRequest.docStoreName}  ${wallet}   ${gasPrice} `);
+    signale.await(`Sending transaction to pool ${deployRequest.docStoreName}
+        ${JSON.stringify(wallet)}   ${gasPrice} `);
+
     const transaction = await factory.deploy(deployRequest.docStoreName, {
       gasPrice: gasPrice.mul(gasPriceScale),
     });
@@ -81,9 +83,9 @@ export default async function deployDocumentStore(
     deployResponse.status = Status.ERROR;
     deployResponse.msg = error.message;
   }
-
+/*
   log(
     `<deployDocumentStore> deployResponse: ${JSON.stringify(deployResponse)}`
-  );
+  );*/
   return deployResponse;
 }
