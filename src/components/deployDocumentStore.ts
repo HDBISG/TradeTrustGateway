@@ -32,6 +32,7 @@ export default async function deployDocumentStore(
     if (!deployRequest.wallet) throw new Error("param deployReq.wallet null");
 
     const wallet = await getWallet({
+      key:deployRequest.wallet.privateKey,
       encryptedWalletJson: deployRequest.wallet.jsonEncrpyted,
       password: deployRequest.wallet.password,
       network: deployRequest.network,
@@ -40,7 +41,7 @@ export default async function deployDocumentStore(
     var gasPriceScale = 1;
     const gasPrice = await wallet.provider.getGasPrice();
     const factory = new DocumentStoreFactory(wallet);
-    signale.await(`Sending transaction to pool ${deployRequest.docStoreName}  ${gasPrice} `);
+    signale.await(`Sending transaction to pool ${deployRequest.docStoreName}  ${wallet}   ${gasPrice} `);
     const transaction = await factory.deploy(deployRequest.docStoreName, {
       gasPrice: gasPrice.mul(gasPriceScale),
     });

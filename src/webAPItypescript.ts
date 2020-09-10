@@ -69,14 +69,16 @@ app.post("/topUp", async function (req: Request, res: Response) {
 
   let topUpRequest = req.body;
 
-  if ( !topUpRequest || !topUpRequest.accountId )  {
-    res.status(400);
-    res.send('Parameter is not correct.');
-    res.end();
-    return;
-  }
+  var auditLog:AuditLog = { event:req.path, accountId:topUpRequest.accountId, storeName:topUpRequest.ether
+      , remoteIp:"", requestBody:topUpRequest, rspStatus:"", rspMessage:"", rspDetails:"" };
 
   var serviceResponse = await tradeTrustService.topupWallet( topUpRequest );
+
+  auditLog.rspStatus = serviceResponse.status.toString();
+  auditLog.rspMessage = serviceResponse.msg!;
+  auditLog.rspDetails = serviceResponse.details;
+
+  ttRepositoryService.insertAuditLog(auditLog);
 
   log( `serviceResponse.status:    ${ JSON.stringify(serviceResponse) }`);
 
@@ -86,17 +88,19 @@ app.post("/topUp", async function (req: Request, res: Response) {
 
 
 app.post("/deployDocStore", async function (req: Request, res: Response) {
-  let serviceDeployRequest = req.body;
 
-  if ( !serviceDeployRequest || !serviceDeployRequest.accountId
-       || !serviceDeployRequest.docStoreName || !serviceDeployRequest.network )  {
-    res.status(400);
-    res.send('Parameter is not correct.');
-    res.end();
-    return;
-  }
+  let deployRequest = req.body;
 
-  var serviceResponse = await tradeTrustService.deployDocumentStore( serviceDeployRequest );
+  var auditLog:AuditLog = { event:req.path, accountId:deployRequest.accountId, storeName:deployRequest.docStoreName
+    , remoteIp:"", requestBody:deployRequest, rspStatus:"", rspMessage:"", rspDetails:"" };
+
+  var serviceResponse = await tradeTrustService.deployDocumentStore( deployRequest );
+
+  auditLog.rspStatus = serviceResponse.status.toString();
+  auditLog.rspMessage = serviceResponse.msg!;
+  auditLog.rspDetails = serviceResponse.details;
+
+  ttRepositoryService.insertAuditLog(auditLog);
 
   log( `serviceResponse.status:  ${JSON.stringify(serviceResponse)}`);
 
@@ -106,16 +110,18 @@ app.post("/deployDocStore", async function (req: Request, res: Response) {
 
 app.post("/issue", async function (req: Request, res: Response) {
 
-  let serviceIssueRequest = req.body;
+  let issueRequest = req.body;
 
-  if ( !serviceIssueRequest || !serviceIssueRequest.rawData || !serviceIssueRequest.accountId || !serviceIssueRequest.storeName )  {
-    res.status(400);
-    res.send('Parameter is not correct.');
-    res.end();
-    return;
-  }
+  var auditLog:AuditLog = { event:req.path, accountId:issueRequest.accountId, storeName:issueRequest.storeName
+    , remoteIp:"", requestBody:issueRequest, rspStatus:"", rspMessage:"", rspDetails:"" };
 
-  var serviceResponse = await tradeTrustService.issueDocument( serviceIssueRequest );
+  var serviceResponse = await tradeTrustService.issueDocument( issueRequest );
+
+  auditLog.rspStatus = serviceResponse.status.toString();
+  auditLog.rspMessage = serviceResponse.msg!;
+  auditLog.rspDetails = serviceResponse.details;
+
+  ttRepositoryService.insertAuditLog(auditLog);
 
   log( `serviceResponse.status:  ${JSON.stringify(serviceResponse)}`);
 

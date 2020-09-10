@@ -116,6 +116,7 @@ export default class TTRepositoryService {
       for ( const i in data[0] ) {
         let walletDetails: WalletDetails = {
           accountId: data[0][i].WALLET_ACCN_ID,
+          privateKey: data[0][i].WALLET_PRIVATE_KEY,
           password: data[0][i].WALLET_PASSWORD,
           address: data[0][i].WALLET_ADDR,
           jsonEncrpyted: data[0][i].WALLET_JSON,

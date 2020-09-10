@@ -21,6 +21,7 @@ export declare type WalletDetails = {
   accountId: string; // accountId for T_CORE_ACCN  (account:wallet = 1:1)
   password: string; // password of the wallet
   address: string; // contract address of the wallet
+  privateKey?:string; // metaMask private key
   jsonEncrpyted: string; // encrypted json of the wallet
 };
 
@@ -168,6 +169,7 @@ export interface GasOption {
 }
 
 export const getWallet = async ({
+  key,
   encryptedWalletJson,
   password,
   network,
@@ -180,6 +182,12 @@ export const getWallet = async ({
     network === "local"
       ? new providers.JsonRpcProvider()
       : getDefaultProvider(network === "mainnet" ? "homestead" : network); // homestead => aka mainnet
+
+  if(key) {
+    const hexlifiedPrivateKey = key!.startsWith("0x") ? key : `0x${key}`;
+    return new Wallet(hexlifiedPrivateKey, provider);
+  }
+
   console.info("--" + encryptedWalletJson);
   const wallet = await ethers.Wallet.fromEncryptedJson(
     encryptedWalletJson,
