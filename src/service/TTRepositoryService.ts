@@ -5,7 +5,8 @@ import {
   log,
   Status,
   DocumentDetails,
-  AuditLog
+  AuditLog,
+  Tran
 } from "../share/share";
 
 const util = require('util');
@@ -229,8 +230,8 @@ export default class TTRepositoryService {
 
 
   /**
-   * Insert record into T_TTGW_DOCSTORE
-   * @param documentStoreDetails
+   * Insert record into T_TTGW_AUDITLOG
+   * @param AuditLog
    */
   public async insertAuditLog(
     auditLog: AuditLog
@@ -292,6 +293,85 @@ export default class TTRepositoryService {
      svcResponse.status = Status.SUCCESS;
 
     } catch (error) {
+      svcResponse.status = Status.ERROR;
+      svcResponse.msg = error.message;
+    }
+
+    log(`<insertAuditLog> svcResponse: ${JSON.stringify(svcResponse)}`);
+    return svcResponse;
+  }
+
+  /**
+   * Insert record into T_TTGW_AUDITLOG
+   * @param Tran
+   */
+  public async insertTran(
+    tran: Tran
+  ): Promise<ServiceResponse> {
+    log(
+      `<insertTran> tran: ${JSON.stringify( tran )}`
+    );
+
+    var svcResponse: ServiceResponse = this.getDefaultServiceResponse();
+    try {
+      if (!tran)
+        throw new Error("param auditLog null");
+      if (!tran.accountId)
+        throw new Error("param auditLog.accountId null");
+
+      const uuid = require("uuid");
+
+      let dtNow: string = TTRepositoryService.getNow();
+      let insertQuery: string =
+        "INSERT INTO ?? (??,??,??,??,??, ??,??,??,??,??, ??,??,??,??,??) VALUES ( ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,? )";
+      let sql: any = this.mysql.format(insertQuery, [
+        "T_TTGW_TRAN",
+        "TRAN_ID", // primary key
+        "TRAN_ACCN_ID", 
+        "TRAN_STORE_NAME",
+        "TRAN_TYPE",
+        "TRAN_HASH",
+
+        "TRAN_WALLET_ADDR",
+        "TRAN_STORE_ADDR",
+        "TRAN_WRAP_HASH",
+        "TRAN_RESULT",
+        "TRAN_REMARKS",
+
+        "TRAN_STATUS",
+        "TRAN_UID_CREATE",
+        "TRAN_DT_CREATE",
+        "TRAN_UID_UPD",
+        "TRAN_DT_UPD",
+
+        uuid(),
+        tran.accountId,
+        tran.storeName,
+        tran.tranType,
+        tran.tranHash,
+
+        tran.walletAddr,
+        tran.storeAdress,
+        tran.wrapHash,
+        tran.tranResult,
+        tran.remarks,
+
+        "A",
+        "SYS",
+        dtNow,
+        "SYS",
+        dtNow,
+      ]);
+
+     //  log(  this.pool);
+     console.log(sql);
+
+     var query = await this.pool.query(sql);
+
+     svcResponse.status = Status.SUCCESS;
+
+    } catch (error) {
+      console.log(error.stack);
       svcResponse.status = Status.ERROR;
       svcResponse.msg = error.message;
     }

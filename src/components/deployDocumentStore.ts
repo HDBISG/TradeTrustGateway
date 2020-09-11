@@ -6,8 +6,11 @@ import {
   DeployResponse,
   getWallet,
   log,
+  Tran,
+  TranType,
 } from "../share/share";
 
+import TTRepositoryService from "../service/TTRepositoryService";
 /**
  * Deploy the document store
  * @param deployRequest
@@ -24,6 +27,11 @@ export default async function deployDocumentStore(
       renderName: "", renderType: "", renderUrl: "", name: "",
       issuerName: "", issuerType: "", issuerLocation: "", remark: "" },
   };
+
+  var tran:Tran = {
+    accountId:"", storeName:"", tranType:TranType.DEPLOY, tranHash:"", tranResult:"", walletAddr:""
+  };
+
   try {
     if (!deployRequest) throw new Error("param deployReq null");
     if (!deployRequest.docStoreName)
@@ -53,10 +61,19 @@ export default async function deployDocumentStore(
       transaction.deployTransaction;
     // log(`details: ${JSON.stringify(details)}`);
 
+    //
+    tran.accountId = deployRequest.accountId;
+    tran.storeName = deployRequest.docStoreName;
+    tran.tranHash = transaction.deployTransaction.hash;
+    tran.walletAddr = wallet.address;
+
     signale.await(`Waiting ${transaction.deployTransaction.hash} to be mined`);
     const documentStore = await transaction.deployTransaction.wait();
     if (!documentStore) throw new Error("documentStore null");
 
+    tran.tranResult = "Y";
+    tran.storeAdress = documentStore.contractAddress;
+    
     deployResponse.status = Status.SUCCESS;
 
 
@@ -79,9 +96,15 @@ export default async function deployDocumentStore(
 
     };
   } catch (error) {
+    
+    tran.tranResult = "N";
+    tran.remarks = error.stack;
     console.log(error.stack);
     deployResponse.status = Status.ERROR;
     deployResponse.msg = error.message;
+  } finally {
+    // insert into tran 
+    new TTRepositoryService().insertTran( tran );
   }
 /*
   log(

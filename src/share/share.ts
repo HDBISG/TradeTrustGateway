@@ -8,6 +8,11 @@ export enum Status {
   ERROR = -2,
 }
 
+export enum TranType {
+  DEPLOY = "DEPLOY",
+  ISSUE = "ISSUE"
+}
+
 export function log(msg: string) {
   console.log(msg);
 }
@@ -145,6 +150,19 @@ export declare type AuditLog = {
   rspStatus:string;
   rspMessage:string;
   rspDetails:string;
+  remarks?:string;
+};
+
+export declare type Tran = {
+  tranId?: string;
+  accountId: string; 
+  storeName: string;
+  tranType:TranType;
+  tranHash:string;
+  tranResult:string;  
+  walletAddr:string;
+  storeAdress?:string;
+  wrapHash?:string;
   remarks?:string;
 };
 
