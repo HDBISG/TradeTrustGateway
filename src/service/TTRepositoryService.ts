@@ -166,13 +166,15 @@ export default class TTRepositoryService {
 
       let dtNow: string = TTRepositoryService.getNow();
       let insertQuery: string =
-        "INSERT INTO ?? (??,??,??,??, ??,??,??,??, ??,??,??,??,  ??,??,??,??,??) VALUES ( ?,?,?,?, ?,?,?,?, ?,?,?,?, ?,?,?,?,? )";
+        "INSERT INTO ?? (??,??,??,??,??,??, ??,??,??,??, ??,??,??,??,  ??,??,??,??,??) VALUES ( ?,?,?,?,?,?, ?,?,?,?, ?,?,?,?, ?,?,?,?,? )";
       let sql: any = this.mysql.format(insertQuery, [
         "T_TTGW_DOCSTORE",
         "DOCSTORE_ACCN_ID", // primary key
         "DOCSTORE_STORE_NAME", // primary key
         "DOCSTORE_ADDR",
         "DOCSTORE_NETWORK",
+        "DOCSTORE_WALLET_ADDR",
+        "DOCSTORE_TRAN_HASH",
         
         "DOCSTORE_RENDER_NAME",
         "DOCSTORE_RENDER_TYPE",
@@ -194,6 +196,8 @@ export default class TTRepositoryService {
         documentStoreDetails.storeName,
         documentStoreDetails.address,
         documentStoreDetails.network,
+        documentStoreDetails.walletAddr,
+        documentStoreDetails.tranHash,
 
         documentStoreDetails.renderName,
         documentStoreDetails.renderType,
@@ -419,6 +423,8 @@ export default class TTRepositoryService {
           accountId: data[0][i].DOCSTORE_ACCN_ID,
           storeName: data[0][i].DOCSTORE_NAME,
           address: data[0][i].DOCSTORE_ADDR,
+          walletAddr: data[0][i].DOCSTORE_WALLET_ADDR,
+          tranHash: data[0][i].DOCSTORE_TRAN_HASH,
           network: data[0][i].DOCSTORE_NETWORK,
           renderName: data[0][i].DOCSTORE_RENDER_NAME, 
           renderType:data[0][i].DOCSTORE_RENDER_TYPE, 
@@ -472,7 +478,7 @@ export default class TTRepositoryService {
       const uuid = require("uuid");
       let dtNow: string = TTRepositoryService.getNow();
       let insertQuery: string =
-        "INSERT INTO ?? (??,??,??, ??,??,??, ??,??,??, ??,??,??) VALUES (?,?,?, ?,?,?, ?,?,?, ?,?,?)";
+        "INSERT INTO ?? (??,??,??,??,??,??,??,  ??,??, ??,??,??,??,??) VALUES (?,?,?,?,?,?,?, ?,?, ?,?,?,?,?)";
       let sql: any = this.mysql.format(insertQuery, [
         "T_TTGW_DOC",
         "DOC_DOC_ID", // Primary key
@@ -480,20 +486,29 @@ export default class TTRepositoryService {
         "DOC_STORE_NAME",
         "DOC_WRAP_HASH",
         "DOC_ADDR",
+        "DOC_WALLET_ADDR",
+        "DOC_TRAN_HASH",
+
         "DOC_WRAP_DOC",
         "DOC_WRAP_RAW_DOC",
+
         "DOC_STATUS",
         "DOC_UID_CREATE",
         "DOC_DT_CREATE",
         "DOC_UID_UPD",
         "DOC_DT_UPD",
+
         uuid(),
         documentDetails.accountId,
         documentDetails.storeName,
         documentDetails.wrappedHash,
         documentDetails.address,
+        documentDetails.walletAddr,
+        documentDetails.tranHash,
+
         documentDetails.wrappedDocument,
         documentDetails.rawDocument,
+
         "A",
         "SYS",
         dtNow,

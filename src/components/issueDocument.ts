@@ -71,7 +71,7 @@ export default async function issueDocument(
     if (!contractAddress) throw new Error("contractAddress null");
 
     issueResponse.status = Status.SUCCESS;
-    issueResponse.details = contractAddress;
+    issueResponse.details = JSON.stringify ( { "tranHash":transaction.hash, walletAddr:wallet.address } );
 
     tran.tranResult = "Y";
     tran.storeAdress = issueRequest.documentStore.address;

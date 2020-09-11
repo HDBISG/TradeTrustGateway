@@ -60,6 +60,8 @@ export declare type DocumentStoreDetails = {
   accountId: string; // accountId used to link to wallet in database (acount:docStoreName = 1:N)
   storeName: string; // docment store name
   address: string;
+  walletAddr:string;
+  tranHash:string;
   renderName: string;
   renderType: string;
   renderUrl:string;
@@ -133,6 +135,8 @@ export declare type DocumentDetails = {
   storeName: string; // docment store name
   wrappedHash: string; // document hash
   address: string; // document hash contract address in the block chain
+  walletAddr:string;
+  tranHash:string;
   wrappedDocument: string; // wrapped document
   rawDocument: string; // raw document
 };

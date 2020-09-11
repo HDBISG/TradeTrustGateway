@@ -23,7 +23,7 @@ export default async function deployDocumentStore(
   var deployResponse: DeployResponse = {
     status: Status.FAIL,
     msg: "",
-    docStore: { accountId: "", storeName: "", address: "", network: "",
+    docStore: { accountId: "", storeName: "", address: "", network: "", walletAddr:"", tranHash:"",
       renderName: "", renderType: "", renderUrl: "", name: "",
       issuerName: "", issuerType: "", issuerLocation: "", remark: "" },
   };
@@ -83,6 +83,8 @@ export default async function deployDocumentStore(
       storeName: deployRequest.docStoreName,
       address: documentStore.contractAddress,
       network: deployRequest.network,
+      walletAddr:wallet.address,
+      tranHash:transaction.deployTransaction.hash,
 
       renderName: "",
       renderType: "",

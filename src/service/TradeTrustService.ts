@@ -248,11 +248,15 @@ export default class TradeTrustService {
       if (issueResponse.status != Status.SUCCESS) {
         throw new Error(`repoSvc: ${issueResponse.msg}`);
       }
+      var issueDeailRsp = JSON.parse( issueResponse.details );
+      
       var docDetails: DocumentDetails = {
         accountId: svcIssueRequest.accountId,
         storeName: svcIssueRequest.storeName,
         wrappedHash: merkleRoot,
         address: docStoreDetails.address,
+        walletAddr: issueDeailRsp.walletAddr,
+        tranHash: issueDeailRsp.tranHash,
         wrappedDocument: JSON.stringify(wrappDocument),
         rawDocument: JSON.stringify(svcIssueRequest.rawData),
       };
@@ -319,6 +323,7 @@ export default class TradeTrustService {
       storeName: "",
       address: "",
       network: "",
+      walletAddr:"", tranHash:"",
       renderName: "", renderType: "", renderUrl: "", name: "",
       issuerName: "", issuerType: "", issuerLocation: "", remark: "",
     };
