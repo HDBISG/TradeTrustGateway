@@ -315,21 +315,22 @@ export default class TTRepositoryService {
     var svcResponse: ServiceResponse = this.getDefaultServiceResponse();
     try {
       if (!tran)
-        throw new Error("param auditLog null");
+        throw new Error("param tran null");
       if (!tran.accountId)
-        throw new Error("param auditLog.accountId null");
+        throw new Error("param tran.accountId null");
 
       const uuid = require("uuid");
 
       let dtNow: string = TTRepositoryService.getNow();
       let insertQuery: string =
-        "INSERT INTO ?? (??,??,??,??,??, ??,??,??,??,??, ??,??,??,??,??) VALUES ( ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,? )";
+        "INSERT INTO ?? (??,??,??,??,??,??, ??,??,??,??,??, ??,??,??,??,??) VALUES ( ?,?,?,?,?,?,  ?,?,?,?,?, ?,?,?,?,? )";
       let sql: any = this.mysql.format(insertQuery, [
         "T_TTGW_TRAN",
         "TRAN_ID", // primary key
         "TRAN_ACCN_ID", 
         "TRAN_STORE_NAME",
         "TRAN_TYPE",
+        "TRAN_NETWORK",
         "TRAN_HASH",
 
         "TRAN_WALLET_ADDR",
@@ -348,6 +349,7 @@ export default class TTRepositoryService {
         tran.accountId,
         tran.storeName,
         tran.tranType,
+        tran.network,
         tran.tranHash,
 
         tran.walletAddr,
@@ -376,7 +378,7 @@ export default class TTRepositoryService {
       svcResponse.msg = error.message;
     }
 
-    log(`<insertAuditLog> svcResponse: ${JSON.stringify(svcResponse)}`);
+    log(`<insertTran> svcResponse: ${JSON.stringify(svcResponse)}`);
     return svcResponse;
   }
 

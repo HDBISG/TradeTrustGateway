@@ -4,7 +4,7 @@ var wrapper = require('../../src/components/wrappDocument').default;
 
 var wrapDocument = new WrapDocument();
 
-const document = require("../resource/raw.json");
+const document = require("../../resource/raw.json");
 
 var wrapResponse = wrapDocument.wrap(  document  );
 

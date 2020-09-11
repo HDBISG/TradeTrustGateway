@@ -158,6 +158,7 @@ export declare type Tran = {
   accountId: string; 
   storeName: string;
   tranType:TranType;
+  network:string;
   tranHash:string;
   tranResult:string;  
   walletAddr:string;

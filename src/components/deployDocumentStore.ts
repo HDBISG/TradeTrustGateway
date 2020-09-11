@@ -29,7 +29,7 @@ export default async function deployDocumentStore(
   };
 
   var tran:Tran = {
-    accountId:"", storeName:"", tranType:TranType.DEPLOY, tranHash:"", tranResult:"", walletAddr:""
+    accountId:"", storeName:"", tranType:TranType.DEPLOY, tranHash:"", network:deployRequest.network, tranResult:"", walletAddr:""
   };
 
   try {
@@ -104,7 +104,9 @@ export default async function deployDocumentStore(
     deployResponse.msg = error.message;
   } finally {
     // insert into tran 
-    new TTRepositoryService().insertTran( tran );
+    if( tran.tranHash ) {
+      new TTRepositoryService().insertTran( tran );
+    }
   }
 /*
   log(

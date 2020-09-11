@@ -7,7 +7,11 @@ import {
   IssueResponse,
   getWallet,
   log,
+  Tran,
+  TranType,
 } from "../share/share";
+
+import TTRepositoryService from "../service/TTRepositoryService";
 
 export default async function issueDocument(
   issueRequest: IssueRequest
@@ -19,6 +23,10 @@ export default async function issueDocument(
     status: Status.FAIL,
     msg: "",
     details: "",
+  };
+
+  var tran:Tran = {
+    accountId:"", storeName:"", tranType:TranType.ISSUE, tranHash:"", network:issueRequest.network, tranResult:"", walletAddr:""
   };
 
   try {
@@ -53,16 +61,36 @@ export default async function issueDocument(
       `transaciton: hash:${transaction.hash} blockNo:${transaction.blockNumber}`
     );
 
+    tran.accountId = issueRequest.documentStore.accountId;
+    tran.storeName = issueRequest.documentStore.storeName;
+    tran.tranHash = transaction.hash;
+    tran.walletAddr = wallet.address;
+
     signale.await(`Waiting for transaction ${transaction.hash} to be mined`);
-    var contractAddress: string = transaction.wait();
+    var contractAddress: string = await transaction.wait();
     if (!contractAddress) throw new Error("contractAddress null");
 
     issueResponse.status = Status.SUCCESS;
     issueResponse.details = contractAddress;
+
+    tran.tranResult = "Y";
+    tran.storeAdress = issueRequest.documentStore.address;
+    tran.wrapHash = issueRequest.wrappedHash;
+    tran.network = issueRequest.network;
+
   } catch (error) {
-    log(error.stack);
+
+    log(`Exception: ${error.stack}`);
+    tran.tranResult = "N";
+    tran.remarks = error.stack;
     issueResponse.status = Status.ERROR;
     issueResponse.msg = error.message;
+  } finally {
+    // insert into tran 
+    // log(`tran.tranHash : ${tran.tranHash}     ${!tran.tranHash}    ${!  tran.tranHash}`);
+     if( tran.tranHash ) {
+      new TTRepositoryService().insertTran( tran );
+     }
   }
 
   log(`<issueDocument> issueResponse: ${JSON.stringify(issueResponse)}`);
