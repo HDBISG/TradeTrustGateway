@@ -23,6 +23,7 @@ import {
   WrapRequest
 } from "../share/share";
 import TTRepositoryService from "./TTRepositoryService";
+import { json } from "express";
 
 export default class TradeTrustService {
   
@@ -355,6 +356,12 @@ export default class TradeTrustService {
   }
 
   private prepareRawDataWithTempalteIssue( renderBody:any, docStoreDetails: DocumentStoreDetails ) : any {
+
+    // conver string to JSON
+    if( (typeof renderBody) === "string" ) {
+      renderBody = JSON.parse(renderBody);
+    }
+
     var wrappData = {"$template":{},"name":"","data":renderBody,"issuers":{} };
     //wrappData.$template =  {};
 
