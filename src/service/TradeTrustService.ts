@@ -271,7 +271,7 @@ export default class TradeTrustService {
 
       svcResponse.status = Status.SUCCESS;
       svcResponse.msg = "SUCCESS";
-      svcResponse.details = wrappedDocumentJson;
+      svcResponse.details = wrappedDocumentJson.details;
     } catch (error) {
       log(error.stack);
       svcResponse.status = Status.ERROR;
