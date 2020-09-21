@@ -46,7 +46,7 @@ export declare type WalletResponse = {
   details: WalletDetails;
 };
 
-export declare type TransactionResponse = {
+export declare type EtherTransaction = {
   "blockNumber":string,
   "timeStamp": string,
   "hash": string,

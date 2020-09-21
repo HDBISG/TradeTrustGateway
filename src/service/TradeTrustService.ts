@@ -26,6 +26,7 @@ import {
   DocumentDetails,
   ListTransactionHttpRequest,
   ListTransactionRequest,
+  EtherTransaction,
   WrapRequest
 } from "../share/share";
 import TTRepositoryService from "./TTRepositoryService";
@@ -335,10 +336,43 @@ export default class TradeTrustService {
       var listTransRsp:ServiceResponse = await ListTransactions( listTransactionRequest );
 
 //       listTransactionRequest: ListTransactionRequest
+      var etherscanList = listTransRsp.details;
+      
+      var transactionList:EtherTransaction[] = []; 
+      
+      //log(`!etherscanList= ${!etherscanList}`) ;
+
+      if( etherscanList ) {
+        var idx:any; 
+        for(idx in etherscanList) { 
+          console.log(etherscanList[idx]) ;
+          let transaction: EtherTransaction = {
+            "blockNumber":etherscanList[idx].blockNumber,
+            "timeStamp": etherscanList[idx].timeStamp,
+            "hash": etherscanList[idx].hash,
+            "nonce": etherscanList[idx].nonce,
+            "blockHash": etherscanList[idx].blockHash,
+            "transactionIndex": etherscanList[idx].transactionIndex,
+            "from": etherscanList[idx].from,
+            "to": etherscanList[idx].to,
+            "value": etherscanList[idx].value,
+            "gas": etherscanList[idx].gas,
+            "gasPrice": etherscanList[idx].gasPrice,
+            "isError": etherscanList[idx].isError,
+            "txreceipt_status": etherscanList[idx].txreceipt_status,
+            "input": etherscanList[idx].input,
+            "contractAddress": etherscanList[idx].contractAddress,
+            "cumulativeGasUsed": etherscanList[idx].cumulativeGasUsed,
+            "gasUsed": etherscanList[idx].gasUsed,
+            "confirmations": etherscanList[idx].confirmations 
+          };
+          transactionList.push( transaction );
+        }
+      }
 
       svcResponse.status = Status.SUCCESS;
       svcResponse.msg = "SUCCESS";
-      svcResponse.details = listTransRsp.details;
+      svcResponse.details = transactionList;
     } catch (error) {
       svcResponse.status = Status.ERROR;
       svcResponse.msg = "ERROR";

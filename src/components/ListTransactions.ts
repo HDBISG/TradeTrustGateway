@@ -41,7 +41,7 @@ export default async function ListTransactions(
 
 
     serviceResponse.status = Status.SUCCESS;
-    serviceResponse.details = rep;
+    serviceResponse.details = rep.result;
 
   } catch (error) {
     
@@ -53,7 +53,7 @@ export default async function ListTransactions(
   return serviceResponse;
 }
 
-function get(url:string): Promise<string>{
+function get(url:string): Promise<any>{
   // return this promise
   return axios.get(url ).then(( rsp )=>{
       console.log('got user')
