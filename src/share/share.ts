@@ -46,6 +46,27 @@ export declare type WalletResponse = {
   details: WalletDetails;
 };
 
+export declare type TransactionResponse = {
+  "blockNumber":string,
+  "timeStamp": string,
+  "hash": string,
+  "nonce": number,
+  "blockHash": string,
+  "transactionIndex": number,
+  "from": string,
+  "to": string,
+  "value": number,
+  "gas": number,
+  "gasPrice": number,
+  "isError": number,
+  "txreceipt_status": number,
+  "input": string,
+  "contractAddress": string,
+  "cumulativeGasUsed": number,
+  "gasUsed": number,
+  "confirmations": number
+}
+
 // TopUp Request/Respnose
 export declare type TopUpRequest = {
   accountId: string; // accountId used to link to wallet in database
@@ -181,6 +202,10 @@ export declare type Tran = {
   remarks?:string;
 };
 
+export interface ListTransactionRequest {
+  walletAddress:string;
+}
+
 // GetWallet
 export interface NetworkOption {
   network: string;
@@ -200,6 +225,7 @@ export interface GasOption {
   gasPriceScale: number;
   dryRun: boolean;
 }
+
 
 export const getWallet = async ({
   key,
