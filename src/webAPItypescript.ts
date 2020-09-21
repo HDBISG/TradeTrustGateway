@@ -152,6 +152,30 @@ app.post("/issue", async function (req: Request, res: Response) {
   res.end( JSON.stringify(serviceResponse) );
 });
 
+
+
+app.post("/listTransaction", async function (req: Request, res: Response) {
+
+  let listTransactionRequest = req.body;
+  var auditLog:AuditLog = { event:req.path, accountId:listTransactionRequest.accountId, storeName:""
+      , remoteIp:"", requestBody:listTransactionRequest, rspStatus:"", rspMessage:"", rspDetails:"" };
+  
+  try {
+    var serviceResponse = await tradeTrustService.listTransaction( listTransactionRequest );
+    
+    auditLog.rspStatus = serviceResponse.status.toString();
+    auditLog.rspMessage = serviceResponse.msg!;
+    auditLog.rspDetails = serviceResponse.details;
+
+    log( `serviceResponse.status:    ${serviceResponse.status}`);
+
+    res.end( JSON.stringify(serviceResponse) );
+  } finally {
+    ttRepositoryService.insertAuditLog(auditLog);
+  }
+
+});
+
 app.post("/publish", function (req: any, res: any) {
   let data = req.body;
   let document = data;

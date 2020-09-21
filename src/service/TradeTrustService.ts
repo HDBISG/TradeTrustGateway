@@ -3,6 +3,7 @@ import FindWallet from "../components/FindWallet";
 import topupWallet from "../components/topupWallet";
 import deployDocumentStore from "../components/deployDocumentStore";
 import issueDocument from "../components/issueDocument";
+import ListTransactions from "../components/ListTransactions";
 import { exception } from "console";
 import {
   WalletRequest,
@@ -23,6 +24,8 @@ import {
   IssueRequest,
   IssueResponse,
   DocumentDetails,
+  ListTransactionHttpRequest,
+  ListTransactionRequest,
   WrapRequest
 } from "../share/share";
 import TTRepositoryService from "./TTRepositoryService";
@@ -310,6 +313,42 @@ export default class TradeTrustService {
     log(`svcResponse: ${JSON.stringify(svcResponse)}`);
     return svcResponse;
   }
+
+  
+  async listTransaction(listTransactionHttpRequest: ListTransactionHttpRequest): Promise<ServiceResponse> {
+    log(`<listTransaction> ListTransactionHttpRequest: ${JSON.stringify(listTransactionHttpRequest)}`);
+
+    let svcResponse: ServiceResponse = this.getDefaultServiceResponse();
+    try {
+      // Create the wallet into blockchain via the component
+      let findWaletRequest: FindWaletRequest =  { accountId: listTransactionHttpRequest.accountId };
+      var walletResponse: FindWalletResponse = await FindWallet(findWaletRequest);
+
+      if (!walletResponse) throw new Error("walletResponse null");
+      var walletDetails: WalletDetails = walletResponse.walletDetails;
+      if (!walletDetails) throw new Error("wallDetails null");
+
+      const walletAddress:string = walletDetails.address;
+
+      var listTransactionRequest: ListTransactionRequest = { "walletAddress":walletAddress };
+
+      var listTransRsp:ServiceResponse = await ListTransactions( listTransactionRequest );
+
+//       listTransactionRequest: ListTransactionRequest
+
+      svcResponse.status = Status.SUCCESS;
+      svcResponse.msg = "SUCCESS";
+      svcResponse.details = listTransRsp.details;
+    } catch (error) {
+      svcResponse.status = Status.ERROR;
+      svcResponse.msg = "ERROR";
+      svcResponse.details = error.message;
+    }
+
+    log(`<createwallet> svcResponse: ${JSON.stringify(svcResponse)}`);
+    return svcResponse;
+  }
+
 
   /**
    * Get the wallet from T_TTGW_WALLET based on <accountId>

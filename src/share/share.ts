@@ -202,6 +202,10 @@ export declare type Tran = {
   remarks?:string;
 };
 
+
+export declare type ListTransactionHttpRequest = {
+  accountId: string
+}
 export interface ListTransactionRequest {
   walletAddress:string;
 }
