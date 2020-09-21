@@ -30,6 +30,16 @@ export declare type WalletDetails = {
   jsonEncrpyted: string; // encrypted json of the wallet
 };
 
+export declare type FindWaletRequest = {
+  accountId: string
+}
+
+export declare type FindWalletResponse = {
+  status: Status;
+  msg?: string;
+  walletDetails: WalletDetails;
+}
+
 export declare type WalletResponse = {
   status: Status;
   msg?: string; // error message asscoiated with failure
