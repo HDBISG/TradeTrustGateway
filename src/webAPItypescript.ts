@@ -65,6 +65,30 @@ app.post("/createWallet", async function (req: Request, res: Response) {
 });
 
 
+
+app.post("/findWallet", async function (req: Request, res: Response) {
+
+  let findWalletRequest = req.body;
+  var auditLog:AuditLog = { event:req.path, accountId:findWalletRequest.accountId, storeName:""
+      , remoteIp:"", requestBody:findWalletRequest, rspStatus:"", rspMessage:"", rspDetails:"" };
+  
+  try {
+    var serviceResponse = await tradeTrustService.findWallet( findWalletRequest );
+    
+    auditLog.rspStatus = serviceResponse.status.toString();
+    auditLog.rspMessage = serviceResponse.msg!;
+    auditLog.rspDetails = serviceResponse.details;
+
+    log( `serviceResponse.status:    ${serviceResponse.status}`);
+
+    res.end( JSON.stringify(serviceResponse) );
+  } finally {
+    ttRepositoryService.insertAuditLog(auditLog);
+  }
+
+});
+
+
 app.post("/topUp", async function (req: Request, res: Response) {
 
   let topUpRequest = req.body;

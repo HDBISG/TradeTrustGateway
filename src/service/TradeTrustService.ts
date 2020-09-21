@@ -1,4 +1,5 @@
 import createWallet from "../components/createWallet";
+import FindWallet from "../components/FindWallet";
 import topupWallet from "../components/topupWallet";
 import deployDocumentStore from "../components/deployDocumentStore";
 import issueDocument from "../components/issueDocument";
@@ -10,6 +11,8 @@ import {
   Status,
   WalletDetails,
   WalletResponse,
+  FindWaletRequest,
+  FindWalletResponse,
   TopUpRequest,
   TopUpResponse,
   ServiceDeployRequest,
@@ -55,6 +58,31 @@ export default class TradeTrustService {
       svcResponse.status = Status.SUCCESS;
       svcResponse.msg = "SUCCESS";
       svcResponse.details = walletResponse.details; // 
+    } catch (error) {
+      svcResponse.status = Status.ERROR;
+      svcResponse.msg = "ERROR";
+      svcResponse.details = error.message;
+    }
+
+    log(`<createwallet> svcResponse: ${JSON.stringify(svcResponse)}`);
+    return svcResponse;
+  }
+
+  async findWallet(findWaletRequest: FindWaletRequest): Promise<ServiceResponse> {
+    log(`<findWallet> FindWaletRequest: ${JSON.stringify(findWaletRequest)}`);
+
+    let svcResponse: ServiceResponse = this.getDefaultServiceResponse();
+    try {
+      // Create the wallet into blockchain via the component
+      var walletResponse: FindWalletResponse = await FindWallet(findWaletRequest);
+      if (!walletResponse) throw new Error("walletResponse null");
+      var walletDetails: WalletDetails = walletResponse.walletDetails;
+      if (!walletDetails) throw new Error("wallDetails null");
+
+
+      svcResponse.status = Status.SUCCESS;
+      svcResponse.msg = "SUCCESS";
+      svcResponse.details = walletResponse.walletDetails; // 
     } catch (error) {
       svcResponse.status = Status.ERROR;
       svcResponse.msg = "ERROR";
