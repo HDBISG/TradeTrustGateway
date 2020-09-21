@@ -48,7 +48,7 @@ export declare type WalletResponse = {
 
 export declare type EtherTransaction = {
   "blockNumber":string,
-  "timeStamp": string,
+  "timeStamp": Date,
   "hash": string,
   "nonce": number,
   "blockHash": string,

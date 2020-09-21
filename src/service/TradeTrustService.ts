@@ -348,7 +348,7 @@ export default class TradeTrustService {
           console.log(etherscanList[idx]) ;
           let transaction: EtherTransaction = {
             "blockNumber":etherscanList[idx].blockNumber,
-            "timeStamp": etherscanList[idx].timeStamp,
+            "timeStamp": new Date( etherscanList[idx].timeStamp * 1000 ),
             "hash": etherscanList[idx].hash,
             "nonce": etherscanList[idx].nonce,
             "blockHash": etherscanList[idx].blockHash,
