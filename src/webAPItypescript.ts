@@ -1,5 +1,7 @@
 //var express  = require('express');
 import express, { Request, Response } from "express";
+const cron = require("node-cron");
+
 var bodyParser = require("body-parser");
 
 const {
@@ -175,6 +177,12 @@ app.post("/listTransaction", async function (req: Request, res: Response) {
   }
 
 });
+
+// schedule tasks to be run on the server
+cron.schedule("* * * * *", function() {
+  //console.log("running a task every minute " + new Date() );
+});
+
 
 app.post("/publish", function (req: any, res: any) {
   let data = req.body;

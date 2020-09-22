@@ -9,7 +9,8 @@ import {
   } from "../../src/share/share";
 
 
-var findWaletRequest: FindWaletRequest = { accountId:"accn1"  };
+//var findWaletRequest: FindWaletRequest = { accountId:"accn1"  };
+var findWaletRequest: FindWaletRequest = { accountId:"vcc"  };
 
 
 
